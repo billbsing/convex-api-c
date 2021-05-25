@@ -1,7 +1,7 @@
 
 
 #include <stdio.h>
-#include "convex.h"
+#include <convex.h>
 
 int main (int argc, char *argv) {
 	convex_p convex;

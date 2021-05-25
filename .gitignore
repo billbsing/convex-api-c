@@ -60,6 +60,7 @@ dkms.conf
 # GIT Ignore AutoMake
 # 
 # http://www.gnu.org/software/automake
+/configure~
 
 Makefile.in
 /ar-lib
