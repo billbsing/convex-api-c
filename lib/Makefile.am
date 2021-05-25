@@ -1,4 +1,4 @@
-lib_LIBRARIES = libconvex.a
-libconvex_a_SOURCES = convex.c
+lib_LIBRARIES = libconvex.la
+libconvex_la_SOURCES = convex.c
 include_HEADERS = convex.h
 
