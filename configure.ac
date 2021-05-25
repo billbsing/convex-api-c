@@ -20,8 +20,10 @@ PKG_CHECK_MODULES([libcrypto], [libssl],,
 AC_CHECK_LIB([crypto], [EVP_PKEY_keygen],,[AC_MSG_ERROR([libssl required!])])
 AC_CHECK_LIB([crypto], [EVP_PKEY_keygen_init],,[AC_MSG_ERROR([libssl required!])])
 
+
 AC_SUBST(SSL_CFLAGS)
 AC_SUBST(SSL_LIBS)
+
 
 PKG_CHECK_MODULES([curl], [libcurl],,
     [AC_MSG_ERROR([No pkg-config for libcurl])])
