@@ -1,2 +1,18 @@
 convex-api-c
 
+
+## Building this library
+
+First run autoreconf
+
+	autoreconf --install
+
+Then run the configure script to make sure all the support libraries are ready
+
+	./configure
+
+Then make the library
+
+	make
+
+
