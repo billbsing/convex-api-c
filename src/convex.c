@@ -117,9 +117,10 @@ int convex_query(convex_p convex, const char *query, long address) {
     result = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
     result = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&convex->response);
     result = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    result = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &convex->response.code);
     result = curl_easy_perform(curl);
-
+    if (result == CURLE_OK) {
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &convex->response.code);
+    }
     curl_slist_free_all(header_list);
     free(data);
     curl_easy_cleanup(curl);

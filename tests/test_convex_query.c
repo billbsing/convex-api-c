@@ -10,13 +10,14 @@ int main() {
     const char *url = "https://convex.world";
     int result;
 
-    // test full init
+    // test query
     result = convex_init(&convex, url);
     assert(result == CONVEX_OK);
 
     result = convex_query(convex, "*balance*", -1);
 
     assert(convex_is_response(convex));
+    assert(convex_response_get_code(convex) == 200L);
     char *data = convex_response_get_data(convex);
     assert(data);
     if (data) {
