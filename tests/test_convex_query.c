@@ -14,7 +14,7 @@ int main() {
     convex = convex_init(url);
     assert(convex);
 
-    result = convex_query(convex, "*balance*", -1);
+    result = convex_query(convex, "*balance*", 0L);
 
     assert(convex_is_response(convex));
     assert(convex_response_get_code(convex) == 200L);

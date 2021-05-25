@@ -2,9 +2,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = src tests
 dist_doc_DATA = README
-CLEANFILES = *~ \#* *.swp
-
-MAINTAINERCLEANFILES = aclocal.m4 Makefile.in configure depcomp install-sh missing
+CLEANFILES = *~ \#*
 
 doxygen.config: Makefile.in
 	echo -e "PROJECT_NAME          = convex-api-py\n \

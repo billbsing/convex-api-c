@@ -35,8 +35,8 @@
  *              return 1;
  *          }
  *
- *          // call a query , if no account number is given it defaults to 9.
- *          int result = convex_query(convex, "*balance*", -1);
+ *          // call a query , if no account number is given (<=0) it defaults to 9.
+ *          int result = convex_query(convex, "*balance*", 0L);
  *          if (result != CONVEX_OK) {
  *              printf("convex_query returned an error %d\n", result);
  *              convex_close(convex);
