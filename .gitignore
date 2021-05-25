@@ -1,3 +1,12 @@
+src/config.*
+src/config.*.*
+src/stamp*
+.libs
+*.log
+*.trs
+tests/test1
+
+
 # GIT Ignore C build
 #
 # Prerequisites
@@ -61,6 +70,7 @@ dkms.conf
 # 
 # http://www.gnu.org/software/automake
 /configure~
+/libtool
 
 Makefile.in
 /ar-lib

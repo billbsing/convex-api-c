@@ -8,7 +8,7 @@ AC_CONFIG_FILES([
  src/Makefile
  tests/Makefile
 ])
-AC_PROG_RANLIB
+AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([curl], [libcurl],,
@@ -52,5 +52,6 @@ AC_CHECK_FUNCS([calloc strchr strcpy strncat sprintf])
 
 
 AM_PROG_AR
+LT_INIT
 AC_OUTPUT
 
