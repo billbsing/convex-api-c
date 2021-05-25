@@ -10,7 +10,6 @@ AC_CONFIG_FILES([
 ])
 AC_CONFIG_MACRO_DIRS([m4])
 
-
 # Checks for libraries.
 
 

@@ -15,4 +15,7 @@ Then make the library
 
 	make
 
+Test the library, you need to do the following:
+
+	make check
 
