@@ -6,5 +6,7 @@ AC_CONFIG_FILES([
  lib/Makefile
  test/Makefile
 ])
+AC_PROG_RANLIB
+AM_PROG_AR
 AC_OUTPUT
 
