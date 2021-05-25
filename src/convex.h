@@ -14,7 +14,7 @@
 #include <curl/curl.h>
 #include <stdbool.h>
 
-#define MAX_SOURCE_SIZE     2048
+#define MAX_SOURCE_SIZE     (1024 * 1024)
 
 typedef struct {
     char *data;
