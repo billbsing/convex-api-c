@@ -10,11 +10,21 @@ AC_CONFIG_FILES([
 ])
 AC_CONFIG_MACRO_DIRS([m4])
 
+
 # Checks for libraries.
+
+
+PKG_CHECK_MODULES([libcrypto], [libssl],,
+    [AC_MSG_ERROR([No pkg-config for libssl])])
+
+AC_CHECK_LIB([crypto], [EVP_PKEY_keygen],,[AC_MSG_ERROR([libssl required!])])
+AC_CHECK_LIB([crypto], [EVP_PKEY_keygen_init],,[AC_MSG_ERROR([libssl required!])])
+
+AC_SUBST(SSL_CFLAGS)
+AC_SUBST(SSL_LIBS)
+
 PKG_CHECK_MODULES([curl], [libcurl],,
     [AC_MSG_ERROR([No pkg-config for libcurl])])
-AC_SUBST(CURL_CFLAGS)
-AC_SUBST(CURL_LIBS)
 
 AC_CHECK_LIB([curl], [curl_easy_init],,[AC_MSG_ERROR([libcurl required!])])
 AC_CHECK_LIB([curl], [curl_easy_escape],,[AC_MSG_ERROR([libcurl required!])])
