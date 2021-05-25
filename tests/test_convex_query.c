@@ -11,8 +11,8 @@ int main() {
     int result;
 
     // test query
-    result = convex_init(&convex, url);
-    assert(result == CONVEX_OK);
+    convex = convex_init(url);
+    assert(convex);
 
     result = convex_query(convex, "*balance*", -1);
 

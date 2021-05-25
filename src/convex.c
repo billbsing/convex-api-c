@@ -37,18 +37,17 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *user_data) {
 
 // public functions
 
-int convex_init(convex_p *convex, const char *url) {
+convex_p convex_init(const char *url) {
     if (!url) {
         url = CONVEX_DEFAULT_URL;
     }
+    convex_p convex = (convex_p) malloc(sizeof(convex_t));
     if (!convex) {
-        return CONVEX_ERROR_INVALID_PARAMETER;
+        return NULL;
     }
-    convex_p data = (convex_p) malloc(sizeof(convex_t));
-    memset(data, 0, sizeof(convex_t));
-    data->url = strdup(url);
-    *convex = data;
-    return CONVEX_OK;
+    memset(convex, 0, sizeof(convex_t));
+    convex->url = strdup(url);
+    return convex;
 }
 
 int convex_close(convex_p convex) {
@@ -58,6 +57,13 @@ int convex_close(convex_p convex) {
         free(convex);
     }
     return CONVEX_OK;
+}
+
+const char * convex_get_url(convex_p convex) {
+    if (convex) {
+        return convex->url;
+    }
+    return NULL;
 }
 
 int convex_query(convex_p convex, const char *query, long address) {
