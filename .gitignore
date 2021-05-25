@@ -4,7 +4,9 @@ src/stamp*
 .libs
 *.log
 *.trs
-tests/test1
+tests/*
+!/tests/*.c
+!/tests/Makefile.am
 
 
 # GIT Ignore C build

@@ -57,7 +57,7 @@ AC_TYPE_UINT32_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([calloc strchr strcpy strncat sprintf])
+AC_CHECK_FUNCS([malloc, realloc, calloc strchr strcpy strncat sprintf])
 
 
 AM_PROG_AR
