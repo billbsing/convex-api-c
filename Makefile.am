@@ -1,14 +1,15 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src tests
+SUBDIRS = src tests examples
 dist_doc_DATA = README
 CLEANFILES = *~ \#*
 
 doxygen.config: Makefile.in
 	echo -e "PROJECT_NAME          = convex-api-py\n \
-USE_MDFILE_AS_MAINPAGE  = README.md\n \
 INPUT		        = src/\n \
 FILE_PATTERNS           = *.h *.c\n \
+EXAMPLE_PATH		= examples\n \
+EXAMPLE_PATTERNS	= *.c\n \
 OUTPUT_DIRECTORY        = docs/\n \
 OPTIMIZE_OUTPUT_FOR_C   = YES\n \
 EXTRACT_ALL             = YES" > doxygen.config

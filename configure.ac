@@ -7,6 +7,7 @@ AC_CONFIG_FILES([
  Makefile
  src/Makefile
  tests/Makefile
+ examples/Makefile
 ])
 AC_CONFIG_MACRO_DIRS([m4])
 
