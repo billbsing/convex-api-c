@@ -6,24 +6,24 @@ convex-api-c
 First run autoreconf
 
 ```bash
-	autoreconf --install
+autoreconf --install
 ```
 
 Then run the configure script to make sure all the support libraries are ready
 
 ```bash
-	./configure
+./configure
 ```
 
 Then make the library
 
 ```bash
-	make
+make
 ```
 
 Test the library, you need to do the following:
 
 ```bash
-	make check
+make check
 ```
 
