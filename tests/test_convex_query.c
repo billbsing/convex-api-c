@@ -18,7 +18,7 @@ int main() {
 
     assert(convex_is_response(convex));
     assert(convex_response_get_code(convex) == 200L);
-    char *data = convex_response_get_data(convex);
+    const char *data = convex_response_get_data(convex);
     assert(data);
     if (data) {
         printf("response data: %s\n", data);

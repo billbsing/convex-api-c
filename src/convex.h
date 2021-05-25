@@ -39,7 +39,7 @@ extern convex_p convex_init(const char*);
 extern int convex_close(convex_p);
 extern const char * convex_get_url(convex_p);
 extern int convex_query(convex_p, const char *, long);
-extern char *convex_response_get_data(convex_p);
+extern const char *convex_response_get_data(convex_p);
 extern bool convex_is_response(convex_p);
 extern int convex_response_clear(convex_p);
 extern long convex_response_get_code(convex_p);

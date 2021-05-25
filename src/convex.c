@@ -10,6 +10,62 @@
 
 #include "convex.h"
 
+/**
+ * @mainpage convex-api-py library
+ *
+ * This libary provides access to the convex network.
+ *
+ * This library uses the following dependent libararies:
+ *
+ * + openssl
+ * + libcurl
+ *
+ * See `convex.c` for the API documentation.
+ *
+ * Example query:
+ *
+ * ```c
+ *      #include<convex.h>
+ *
+ *      int main() {
+ *          // create a new convex data handle.
+ *          convex_p convex = convex_init("https://convex.world");
+ *          if (!convex) {
+ *              printf("cannot start convex client\n");
+ *              return 1;
+ *          }
+ *
+ *          // call a query , if no account number is given it defaults to 9.
+ *          int result = convex_query(convex, "*balance*", -1);
+ *          if (result != CONVEX_OK) {
+ *              printf("convex_query returned an error %d\n", result);
+ *              convex_close(convex);
+ *              return result;
+ *          }
+ *
+ *          // check to see if a valid response has returned
+ *          if (convex_is_response(convex) && convex_response_get_code(convex) == 200) {
+ *              // print out the query response
+ *              printf("convex_query result: %s\n", convex_response_get_data(convex));
+ *          }
+ *
+ *          // clear and close the convex data.
+ *          convex_close(convex);
+ *          return 0;
+ *      }
+ * ```
+ *
+ *
+ *
+ *
+ */
+
+/**
+ * @private
+ *
+ * Helper function to create a valid request post data string to send to convex API.
+ *
+ */
 char *create_data_string(const char *source, long address, const char *language) {
 
     if (strlen(source) > MAX_SOURCE_SIZE) {
@@ -20,6 +76,12 @@ char *create_data_string(const char *source, long address, const char *language)
     return data;
 }
 
+/**
+ * @private
+ *
+ * Call back function, called by curl when the response data is being received.
+ *
+ */
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *user_data) {
     size_t real_size = size * nmemb;
     response_p response = (response_p) user_data;
@@ -37,6 +99,14 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *user_data) {
 
 // public functions
 
+/**
+ * Init a convex connection to a specified url.
+ *
+ * @param[in] url URL to connect to the convex network. Defaluts: https:\\convex.world
+ *
+ * @returns convex_p Convex handle that has to be passed to other functions.
+ *
+ */
 convex_p convex_init(const char *url) {
     if (!url) {
         url = CONVEX_DEFAULT_URL;
@@ -50,6 +120,14 @@ convex_p convex_init(const char *url) {
     return convex;
 }
 
+/**
+ * Closes a convex , and frees the memory saved with the convex data.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @returns CONVEX_OK if free memmory was successfull.
+ *
+ */
 int convex_close(convex_p convex) {
     if (convex) {
         convex_response_clear(convex);
@@ -59,6 +137,14 @@ int convex_close(convex_p convex) {
     return CONVEX_OK;
 }
 
+/**
+ * Return the url set when the convex_init was first called.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @return const char * string of the url
+ *
+ */
 const char * convex_get_url(convex_p convex) {
     if (convex) {
         return convex->url;
@@ -66,6 +152,18 @@ const char * convex_get_url(convex_p convex) {
     return NULL;
 }
 
+/**
+ * Execute a query on the convex network.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] query The query string to execute.
+ *
+ * @param[in] address Optional address of the account to execute the query on. Defaults: 9.
+ *
+ * @return CONVEX_OK or CONVEX_ERROR.. if this function was succesfull
+ *
+ */
 int convex_query(convex_p convex, const char *query, long address) {
     CURLUcode result = 0;
 
@@ -135,14 +233,35 @@ int convex_query(convex_p convex, const char *query, long address) {
     return CONVEX_OK;
 }
 
-char * convex_response_get_data(convex_p convex) {
+/**
+ * Get the response data after calling a `convex_query` or `convex_submit`.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @returns const char * of the response text.
+ */
+const char * convex_response_get_data(convex_p convex) {
     return convex->response.data;
 }
 
+/**
+ * Tests to see if a response was returned after calling a `convex_query` or `convex_submit`.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @returns true if a response is returned.
+ */
 bool convex_is_response(convex_p convex) {
     return convex->response.size > 0;
 }
 
+/**
+ * Clears a response data after calling a `convex_query` or `convex_submit`.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @return CONVEX_OK or CONVEX_ERROR.. if this function was succesfull
+ */
 int convex_response_clear(convex_p convex) {
     if (convex->response.data) {
         free(convex->response.data);
@@ -152,6 +271,13 @@ int convex_response_clear(convex_p convex) {
     return CONVEX_OK;
 }
 
+/**
+ * Get the response code after calling a `convex_query` or `convex_submit`.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @returns long response code. Normally this will be 200 if request was succesfull.
+ */
 long convex_response_get_code(convex_p convex) {
     return convex->response.code;
 }
