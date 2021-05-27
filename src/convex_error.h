@@ -18,5 +18,6 @@
 #define CONVEX_ERROR_INVALID_PARAMETER          2
 #define CONVEX_ERROR_INVALID_URL                3
 #define CONVEX_ERROR_INVALID_DATA               4
+#define CONVEX_ACCOUNT_SSL_ERROR                5
 
 #endif            // CONVEX_ERROR_H
