@@ -1,5 +1,6 @@
-convex-api-c
+# convex-api-c
 
+For more information about [convex](https://convex.world)
 
 ## Building this library
 
@@ -27,3 +28,6 @@ Test the library, you need to do the following:
 make check
 ```
 
+## Community
+
+We use Discord as the primary means for discussing Convex - you can join the public server at https://discord.gg/5j2mPsk
