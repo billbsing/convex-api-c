@@ -1,5 +1,15 @@
 AM_DEFAULT_SOURCE_EXT = .c
 LDADD = $(top_builddir)/src/libconvex.la
 
-TESTS = test_convex_init test_convex_query test_convex_account_init test_convex_account_export_text test_convex_account_export_file
-check_PROGRAMS = test_convex_init test_convex_query test_convex_account_init test_convex_account_export_text test_convex_account_export_file
+TESTS = test_convex_init test_convex_query \
+test_convex_account_init \
+test_convex_account_export_text \
+test_convex_account_export_file \
+test_convex_account_public_key
+
+check_PROGRAMS = test_convex_init \
+test_convex_query \
+test_convex_account_init \
+test_convex_account_export_text \
+test_convex_account_export_file \
+test_convex_account_public_key

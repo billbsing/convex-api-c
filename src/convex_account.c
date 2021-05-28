@@ -37,6 +37,15 @@ void set_raw_public_key(convex_account_p account) {
 
 }
 
+void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, unsigned char *hash_data, unsigned int *hash_length) {
+
+    const EVP_MD *md = EVP_sha3_256();
+    EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(mdctx, md, NULL);
+    EVP_DigestUpdate(mdctx, data, data_length);
+    EVP_DigestFinal_ex(mdctx, hash_data, hash_length);
+    EVP_MD_CTX_free(mdctx);
+}
 
 // public functions
 
@@ -83,16 +92,12 @@ convex_account_p convex_account_init_from_text(const char *key_text, const char 
         return NULL;
     }
 
-    const EVP_CIPHER *cipher = EVP_aes_256_cfb();
-    if (!cipher) {
-        return NULL;
-    }
-
     BIO *memory = BIO_new(BIO_s_mem());
     BIO_puts(memory, key_text);
     account->key = PEM_read_bio_PrivateKey(memory, NULL, NULL, (const char *)password);
     BIO_free_all(memory);
     if (!account->key) {
+        printf("no key\n");
         return NULL;
     }
     set_raw_public_key(account);
@@ -249,16 +254,43 @@ int convex_account_public_key(convex_account_p account, char *buffer, int *buffe
     int index = 0;
     char *ptr = buffer;
 
+    unsigned char hash_buffer[CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH];
+    int hash_buffer_length = CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH;
+    caclulate_hash_sha3_256(account->public_key, CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH, hash_buffer, &hash_buffer_length);
+
     // check to see if we have enought memory to write too.
-    if (*buffer_length < ((CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH * 2) + 1)) {
+    if (*buffer_length < (CONVEX_ACCOUNT_PUBLIC_KEY_HEX_LENGTH + 1)) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
-    for ( index = 0; index < CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH; index ++ ) {
-        sprintf(ptr, "%02x", account->public_key[index]);
-        ptr += 2;
+
+    int hash_index = 0;
+    int value_index = 0;
+    for ( index = 0; index < CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH * 2; index ++) {
+        unsigned int hash_value = hash_buffer[hash_index];
+        unsigned int value = account->public_key[value_index];
+        if ((index % 2) == 0) {
+            hash_value = hash_value >> 4;
+            value = value >> 4;
+        }
+        hash_value = hash_value & 0x0F;
+        value = value & 0x0F;
+        if ((hash_value & 0x0F) > 7) {
+            sprintf(ptr, "%01X", value);
+        }
+        else {
+            sprintf(ptr, "%01x", value);
+        }
+        ptr ++;
+        if (index % 2) {
+            value_index ++;
+            hash_index ++;
+            if (hash_index >= hash_buffer_length) {
+                hash_index = 0;
+            }
+        }
     }
     *ptr = 0;
-    *buffer_length = (CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH * 2) + 1;
+    *buffer_length = CONVEX_ACCOUNT_PUBLIC_KEY_HEX_LENGTH + 1;
     return CONVEX_OK;
 }
 
