@@ -43,7 +43,7 @@ void set_raw_public_key(convex_account_p account) {
 
 
 /**
- * Init a convex account. This will generate a new public/private ED25991 keys.
+ * Init a convex account. This will generate a new random public/private ED25991 keys.
  *
  */
 convex_account_p convex_account_init() {
@@ -65,6 +65,18 @@ convex_account_p convex_account_init() {
     return account;
 }
 
+/**
+ * Init a convex account from a PEM text string. This string has been created by the `convex_account_export_to_file`
+ * or by the `convex_account_export_text` function.
+ *
+ * @param[in] key_text PEM string to import.
+ *
+ * @param[in] password Password string that was used to encrypt the key in PEM format.
+ *
+ * @return A new convex_account_p value. If the password is incorrect or their is not enought memory,
+ * this function will return a NULL.
+ *
+ */
 convex_account_p convex_account_init_from_text(const char *key_text, const char *password) {
     convex_account_p account = init_empty_account();
     if (!account) {
@@ -73,7 +85,7 @@ convex_account_p convex_account_init_from_text(const char *key_text, const char 
 
     const EVP_CIPHER *cipher = EVP_aes_256_cfb();
     if (!cipher) {
-        return CONVEX_ACCOUNT_SSL_ERROR;
+        return NULL;
     }
 
     BIO *memory = BIO_new(BIO_s_mem());
@@ -87,15 +99,24 @@ convex_account_p convex_account_init_from_text(const char *key_text, const char 
     return account;
 }
 
-convex_account_p convex_account_init_from_file(const char *filename, const char *password) {
+/**
+ * Init a convex account data struct using a file handle. The file is opened to a PEM file.
+ *
+ * @param[in] fp File handle that is open to a PEM file.
+ *
+ * @param[in] password Password string that was used to encrypt the PEM file.
+ *
+ * @return The convex_account_p of the account. Return NUL if the file cannot be opened, memory issues
+ * or the password is incorrect.
+ *
+ */
+convex_account_p convex_account_init_from_file(FILE *fp, const char *password) {
     convex_account_p account = init_empty_account();
     if (!account) {
         return NULL;
     }
 
-    FILE *fp = fopen(filename, "r");
     account->key = PEM_read_PrivateKey(fp, NULL, NULL, (const char *)password);
-    fclose(fp);
     if (!account->key) {
         return NULL;
     }
@@ -103,7 +124,14 @@ convex_account_p convex_account_init_from_file(const char *filename, const char 
     return account;
 }
 
-
+/**
+ * Closes and frees the allocated memory for the convex_account data structure.
+ *
+ * @param[in] account Pointer to the convex_account data.
+ *
+ * @return CONVEX_OK if ok.
+ *
+ */
 int convex_account_close(convex_account_p account) {
     if (account) {
         if (account->key) {
@@ -114,7 +142,19 @@ int convex_account_close(convex_account_p account) {
     return CONVEX_OK;
 }
 
-int convex_account_export_to_file(convex_account_p account, const char *filename, const char *password) {
+/**
+ * Exports the public/private key to an encrypted file.
+ *
+ * @param[in] account The account to export.
+ *
+ * @param[in] password The string password to encrypt the PEM file.
+ *
+ * @param[in] fp The file handle to write the encrypted data in PEM format.
+ *
+ * @return CONVEX_OK if the file was exported.
+ *
+ */
+int convex_account_export_to_file(convex_account_p account, const char *password, FILE *fp) {
 
     if (!(password && strlen(password) > 0)) {
         return CONVEX_ERROR_INVALID_PARAMETER;
@@ -125,13 +165,24 @@ int convex_account_export_to_file(convex_account_p account, const char *filename
         return CONVEX_ACCOUNT_SSL_ERROR;
     }
 
-    FILE *fp = fopen(filename, "w+");
     PEM_write_PKCS8PrivateKey(fp, account->key, cipher, NULL, 0, 0, password);
-    fclose(fp);
 
     return CONVEX_OK;
 }
 
+/**
+ * Export the public/private key to a PEM encoded text format.
+ *
+ * @param[in] account Account to export.
+ *
+ * @param[in] password Password to encrypt the PEM format.
+ *
+ * @param[out] buffer Pointer to a buffer to write too. You must have > 140 bytes created for the PEM to be writtern.
+ *
+ * @param[out] buffer_size Pointer to a long buffer size. This value must be set to the maximum allowed size the buffer can handle.
+ * If less then allowed then this call will return with an error. The function will write the length of data writtern to buffer.
+ *
+ */
 int convex_account_export_to_text(convex_account_p account, const char *password, char *buffer, long *buffer_size) {
 
     if (!(password && strlen(password) > 0)) {
@@ -170,10 +221,30 @@ int convex_account_export_to_text(convex_account_p account, const char *password
     return CONVEX_OK;
 }
 
-const unsigned char *convex_account_get_raw_public_key(convex_account_p account) {
+/**
+ * Pointer to the public key in bytes.
+ *
+ * @param[in] account Account to get the public key in bytes
+ *
+ * @return The pointer to the public key. The key length is CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH
+ *
+ */
+const unsigned char *convex_account_get_public_key_bytes(convex_account_p account) {
     return account->public_key;
 }
 
+/**
+ * Get the public key as a hex string.
+ *
+ * @param[in] account The account to get the public hex.
+ *
+ * @param[out] buffer Buffer data to write the public hex string too.
+ *
+ * @param[out] buffer_length The length of the buffer before setting the string. After calling
+ * this function buffer_length is set to the length of the hex string writtern. So this will be
+ * set too (CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH *2) + 1
+ *
+ */
 int convex_account_public_key(convex_account_p account, char *buffer, int *buffer_length) {
     int index = 0;
     char *ptr = buffer;
@@ -191,13 +262,40 @@ int convex_account_public_key(convex_account_p account, char *buffer, int *buffe
     return CONVEX_OK;
 }
 
+/**
+ * Return a hex string of the public key.
+ *
+ * @param[in] account Account to get the public key.
+ *
+ * @return a hex string of the public key.
+ *
+ */
 const char *convex_account_get_public_key(convex_account_p account) {
     int key_length = sizeof(account->public_key_hex);
-    int result = convex_account_public_key(account, account->public_key_hex, &key_length);
-    if (result != CONVEX_OK) {
-        return NULL;
+    if (strlen(account->public_key_hex) == 0) {
+        int result = convex_account_public_key(account, account->public_key_hex, &key_length);
+        if (result != CONVEX_OK) {
+            return NULL;
+        }
     }
     return account->public_key_hex;
 }
 
+
+/**
+ * Return true if both accounts are equal.
+ *
+ * @param[in] a Account a to compare.
+ *
+ * @param[in] b Account b to compare with account a.
+ *
+ * @return True if both public keys are equal.
+ *
+ */
+const bool convex_account_is_equal(convex_account_p a, convex_account_p b) {
+    int index;
+    const unsigned char *ptr_a = convex_account_get_public_key_bytes(a);
+    const unsigned char *ptr_b = convex_account_get_public_key_bytes(b);
+    return memcmp(ptr_a, ptr_b, CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH) == 0;
+}
 

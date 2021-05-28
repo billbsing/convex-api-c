@@ -9,16 +9,10 @@ int main() {
     convex_account_p account;
     int result;
 
-    // test full init
-    account = convex_account_init();
-    assert(account);
-    result = convex_account_close(account);
-    assert(result == CONVEX_OK);
-
     // export to PEM string
     char buffer[1024];
     long buffer_size = 1024;
-    char *password = "secret";
+    const char *password = "secret";
 
     account = convex_account_init();
     assert(account);
@@ -31,11 +25,11 @@ int main() {
     assert(buffer_size > 200);
 
 
-    const unsigned char *raw_public_key = convex_account_get_raw_public_key(account);
+    const unsigned char *public_key_bytes = convex_account_get_public_key_bytes(account);
     char public_key_hex[66];
     char *ptr = public_key_hex;
     for (int index; index < 32; index ++ ) {
-        sprintf(ptr, "%02x", raw_public_key[index]);
+        sprintf(ptr, "%02x", public_key_bytes[index]);
         ptr += 2;
     }
     *ptr = 0;
@@ -71,24 +65,8 @@ int main() {
     result = convex_account_close(import_account);
     assert(result == CONVEX_OK);
 
-    // export key data to file and re-import
-
-    char *temp_key_filename = "/tmp/convex_account_test.pem";
-    result = convex_account_export_to_file(account, temp_key_filename, password);
-    assert(result == CONVEX_OK);
-
-    import_account = convex_account_init_from_file(temp_key_filename, password);
-    assert(import_account);
-
-    assert(strcmp(convex_account_get_public_key(account), convex_account_get_public_key(import_account)) == 0);
-
-    result = convex_account_close(import_account);
-    assert(result == CONVEX_OK);
-
     result = convex_account_close(account);
     assert(result == CONVEX_OK);
-
-    remove(temp_key_filename);
 
     return 0;
 }
