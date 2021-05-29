@@ -11,7 +11,10 @@
 
 #include "convex_error.h"
 
-
+/**
+ * @private
+ *
+ */
 void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, unsigned char *hash_data, unsigned int *hash_length) {
 
     const EVP_MD *md = EVP_sha3_256();
@@ -26,13 +29,17 @@ void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, u
 /**
  * Get the public key as a hex string.
  *
- * @param[in] account The account to get the public hex.
+ * @param[in] key_bytes The public key in bytes.
+ *
+ * @param[in] key_length The length of the public key.
  *
  * @param[out] buffer Buffer data to write the public hex string too.
  *
  * @param[out] buffer_length The length of the buffer before setting the string. After calling
- * this function buffer_length is set to the length of the hex string writtern. So this will be
- * set too (CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH *2) + 1
+ * this function buffer_length is set to the length of the hex string writtern.
+ * So this will be set too (key_length * 2) + 1.
+ *
+ * @return CONVEX_OK if the function was successfull.
  *
  */
 int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, char *buffer, int *buffer_length) {

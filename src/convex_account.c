@@ -11,6 +11,14 @@
 #include "convex_account.h"
 #include "convex_utils.h"
 
+/**
+ * @private
+ *
+ * init an empty convex account structure and return it's pointer.
+ *
+ * @return convex_account_p Pointer to a new convex_account_t structure.
+ *
+ */
 convex_account_p init_empty_account() {
     convex_account_p account = (convex_account_p) malloc(sizeof(convex_account_t));
     if (!account) {
@@ -20,22 +28,16 @@ convex_account_p init_empty_account() {
     return account;
 }
 
-
-EVP_PKEY_CTX *pkey_ctx_init() {
-    EVP_PKEY_CTX *ctx;
-    ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_ED25519, NULL);
-    if (!ctx) {
-        return NULL;
-    }
-    EVP_PKEY_keygen_init(ctx);
-
-    return ctx;
-}
-
+/**
+ * @private
+ *
+ * Set's the internal public key bytes to the actual key in the openssl key.
+ *
+ */
 void set_raw_public_key(convex_account_p account) {
     long key_length = sizeof(account->public_key);
     EVP_PKEY_get_raw_public_key(account->key, account->public_key, &key_length);
-
+    memset(account->public_key_hex, 0, sizeof(account->public_key_hex));
 }
 
 // public functions
@@ -47,20 +49,28 @@ void set_raw_public_key(convex_account_p account) {
  *
  */
 convex_account_p convex_account_init() {
+    EVP_PKEY_CTX *ctx;
+
+    // create an account record
     convex_account_p account = init_empty_account();
     if (!account) {
         return NULL;
     }
 
-    EVP_PKEY_CTX *ctx = pkey_ctx_init();
+    // create the openssl ctx for ED25519 keys
+    ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_ED25519, NULL);
     if (!ctx) {
-        free(account);
+        convex_account_close(account);
         return NULL;
     }
 
     EVP_PKEY_keygen_init(ctx);
+
+    // generate a new key
     EVP_PKEY_keygen(ctx, &account->key);
     set_raw_public_key(account);
+
+    // now free the openssl ctx
     EVP_PKEY_CTX_free(ctx);
     return account;
 }
@@ -88,7 +98,7 @@ convex_account_p convex_account_init_from_text(const char *key_text, const char 
     account->key = PEM_read_bio_PrivateKey(memory, NULL, NULL, (const char *)password);
     BIO_free_all(memory);
     if (!account->key) {
-        printf("no key\n");
+        convex_account_close(account);
         return NULL;
     }
     set_raw_public_key(account);
@@ -114,6 +124,7 @@ convex_account_p convex_account_init_from_file(FILE *fp, const char *password) {
 
     account->key = PEM_read_PrivateKey(fp, NULL, NULL, (const char *)password);
     if (!account->key) {
+        convex_account_close(account);
         return NULL;
     }
     set_raw_public_key(account);

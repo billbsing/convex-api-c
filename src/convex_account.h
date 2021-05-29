@@ -22,7 +22,7 @@
 typedef struct {
     EVP_PKEY *key;
     unsigned char public_key[CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH];
-    char public_key_hex[(CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH * 2) + 1];
+    char public_key_hex[CONVEX_ACCOUNT_PUBLIC_KEY_HEX_LENGTH + 1];
 } convex_account_t;
 
 typedef convex_account_t* convex_account_p;
