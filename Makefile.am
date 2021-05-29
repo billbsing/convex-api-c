@@ -5,7 +5,7 @@ dist_doc_DATA = README
 CLEANFILES = *~ \#*
 
 doxygen.config: Makefile.in
-	echo -e "PROJECT_NAME          = convex-api-py\n \
+	echo -e "PROJECT_NAME          = convex-api-c\n \
 INPUT		        = src/\n \
 FILE_PATTERNS           = *.h *.c\n \
 EXAMPLE_PATH		= examples\n \
