@@ -1,9 +1,10 @@
 
 
 #include <stdio.h>
-#include <convex.h>
 #include <assert.h>
 #include <string.h>
+
+#include "convex.h"
 
 int main() {
     convex_p convex;

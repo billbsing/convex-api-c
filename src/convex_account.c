@@ -9,6 +9,7 @@
 #include <stdbool.h>
 
 #include "convex_account.h"
+#include "convex_utils.h"
 
 convex_account_p init_empty_account() {
     convex_account_p account = (convex_account_p) malloc(sizeof(convex_account_t));
@@ -35,16 +36,6 @@ void set_raw_public_key(convex_account_p account) {
     long key_length = sizeof(account->public_key);
     EVP_PKEY_get_raw_public_key(account->key, account->public_key, &key_length);
 
-}
-
-void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, unsigned char *hash_data, unsigned int *hash_length) {
-
-    const EVP_MD *md = EVP_sha3_256();
-    EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
-    EVP_DigestInit_ex(mdctx, md, NULL);
-    EVP_DigestUpdate(mdctx, data, data_length);
-    EVP_DigestFinal_ex(mdctx, hash_data, hash_length);
-    EVP_MD_CTX_free(mdctx);
 }
 
 // public functions
@@ -239,62 +230,6 @@ const unsigned char *convex_account_get_public_key_bytes(convex_account_p accoun
 }
 
 /**
- * Get the public key as a hex string.
- *
- * @param[in] account The account to get the public hex.
- *
- * @param[out] buffer Buffer data to write the public hex string too.
- *
- * @param[out] buffer_length The length of the buffer before setting the string. After calling
- * this function buffer_length is set to the length of the hex string writtern. So this will be
- * set too (CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH *2) + 1
- *
- */
-int convex_account_public_key(convex_account_p account, char *buffer, int *buffer_length) {
-    int index = 0;
-    char *ptr = buffer;
-
-    unsigned char hash_buffer[CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH];
-    int hash_buffer_length = CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH;
-    caclulate_hash_sha3_256(account->public_key, CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH, hash_buffer, &hash_buffer_length);
-
-    // check to see if we have enought memory to write too.
-    if (*buffer_length < (CONVEX_ACCOUNT_PUBLIC_KEY_HEX_LENGTH + 1)) {
-        return CONVEX_ERROR_INVALID_PARAMETER;
-    }
-
-    int hash_index = 0;
-    int value_index = 0;
-    for ( index = 0; index < CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH * 2; index ++) {
-        unsigned int hash_value = hash_buffer[hash_index];
-        unsigned int value = account->public_key[value_index];
-        if ((index % 2) == 0) {
-            hash_value = hash_value >> 4;
-            value = value >> 4;
-        }
-        hash_value = hash_value & 0x0F;
-        value = value & 0x0F;
-        if ((hash_value & 0x0F) > 7) {
-            sprintf(ptr, "%01X", value);
-        }
-        else {
-            sprintf(ptr, "%01x", value);
-        }
-        ptr ++;
-        if (index % 2) {
-            value_index ++;
-            hash_index ++;
-            if (hash_index >= hash_buffer_length) {
-                hash_index = 0;
-            }
-        }
-    }
-    *ptr = 0;
-    *buffer_length = CONVEX_ACCOUNT_PUBLIC_KEY_HEX_LENGTH + 1;
-    return CONVEX_OK;
-}
-
-/**
  * Return a hex string of the public key.
  *
  * @param[in] account Account to get the public key.
@@ -305,7 +240,7 @@ int convex_account_public_key(convex_account_p account, char *buffer, int *buffe
 const char *convex_account_get_public_key(convex_account_p account) {
     int key_length = sizeof(account->public_key_hex);
     if (strlen(account->public_key_hex) == 0) {
-        int result = convex_account_public_key(account, account->public_key_hex, &key_length);
+        int result = convex_utils_public_key_to_hex(account->public_key, CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH, account->public_key_hex, &key_length);
         if (result != CONVEX_OK) {
             return NULL;
         }

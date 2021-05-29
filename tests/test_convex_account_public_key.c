@@ -22,14 +22,6 @@ int main() {
     account = convex_account_init_from_text(PRIVATE_TEST_KEY_TEXT, TEST_PASSWORD);
     assert(account);
 
-    char public_key[66];
-    unsigned int public_key_length = 66;
-
-    result = convex_account_public_key(account, public_key, &public_key_length);
-    assert(result == CONVEX_OK);
-
-    assert(strcmp(public_key, PUBLIC_KEY_HEX) == 0);
-
     assert(strcmp(convex_account_get_public_key(account), PUBLIC_KEY_HEX) == 0);
 
     result = convex_account_close(account);
