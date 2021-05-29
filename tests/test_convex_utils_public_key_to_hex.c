@@ -23,6 +23,7 @@ int main() {
     int hex_buffer_length = 32;
     int result;
 
+    // call with the buffer length too small (32)
     result = convex_utils_public_key_to_hex(PUBLIC_KEY_BYTES, sizeof(PUBLIC_KEY_BYTES), hex_buffer, &hex_buffer_length);
     assert(result == CONVEX_ERROR_INVALID_PARAMETER);
     assert(hex_buffer_length == 65);
