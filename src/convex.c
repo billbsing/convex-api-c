@@ -55,12 +55,13 @@ char *create_data_string(const char *source, long address, const char *language)
  *
  * @return CONVEX_OK or CONVEX_ERROR.. if this function was succesfull
  */
-const int response_clear(response_p response) {
+int response_clear(response_p response) {
     if (response->data) {
         free(response->data);
     }
     response->data = NULL;
     response->code = 0;
+    response->size = 0;
     return CONVEX_OK;
 }
 
@@ -166,6 +167,20 @@ int curl_request_post(CURLU *url, const char *data, response_p response) {
 
 }
 
+/**
+ * @private
+ *
+ * Get a JSON value from a string. This is a simple string search for the name in quotes.
+ *  if found then the next value is returned.
+ *
+ * @param data JSON string to search for the field.
+ *
+ * @param field_name Name of the JSON field to search for.
+ *
+ * @returns The value string. You will need to `free` this string after use.
+ *  NULL if the field_name cannot be found.
+ *
+ */
 char *get_value_from_json(const char *data, const char *field_name){
     char *value_text = NULL;
     char *field_find_text = malloc(strlen(field_name) + 10);
@@ -199,7 +214,26 @@ char *get_value_from_json(const char *data, const char *field_name){
     return value_text;
 }
 
-const int convex_transaction_prepare(const convex_p convex, const char *transaction, const address_t address, char *hash, int hash_length) {
+/**
+ * @private
+ *
+ * Prepare a transaction, by requesting the hash for a transaction from the convex network.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] transcation String of the transaction to execute on the convex network.
+ *
+ * @param[in] address Address of the account to execute on.
+ *
+ * @param[out] hash Hash string that is returned from the call to transaction/prepare.
+ *
+ * @param[out] hash_length The total length of data available for the hash string to be written, after this call the
+ *  hash_length will contain the length of the str hex hash in `hash`.
+ *
+ * @returns CONVEX_OK if the prepare was succesfull
+ *
+ */
+int convex_transaction_prepare(const convex_p convex, const char *transaction, const address_t address, char *hash, int hash_length) {
     response_t response;
     memset(&response, 0, sizeof(response_t));
 
@@ -234,7 +268,25 @@ const int convex_transaction_prepare(const convex_p convex, const char *transact
     return result;
 }
 
-const int convex_transaction_submit(
+/**
+ * @private
+ *
+ * Submit a signed transaction to the convex network.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] address Account address to submit the transaction on.
+ *
+ * @param[in] public_key Public key of the account.
+ *
+ * @param[in] hash_data Hash string sent by the `transaction_prepare` function.
+ *
+ * @param[in] signed_data Hex string of the signed data.
+ *
+ * @returns CONVEX_OK if the submit was succesfull
+ *
+ */
+int convex_transaction_submit(
         const convex_p convex,
         const address_t address,
         const char *public_key,
@@ -251,6 +303,7 @@ const int convex_transaction_submit(
 
     int result = curl_request_post(url, data, &convex->response);
     curl_url_cleanup(url);
+    printf("response %d %s\n", convex->response.code, convex->response.data);
     if ( !(result == CONVEX_OK || convex->response.code == 200)) {
         result = CONVEX_ERROR_SUBMIT_FAILED;
     }
@@ -325,7 +378,7 @@ const char * convex_get_url(convex_p convex) {
  * @return CONVEX_OK if the create account was valid and the new address will be set.
  *
  */
-const int convex_create_account(const convex_p convex, const convex_account_p account, unsigned long *address) {
+int convex_create_account(const convex_p convex, const convex_account_p account, unsigned long *address) {
     response_t response;
     memset(&response, 0, sizeof(response_t));
 
@@ -368,9 +421,20 @@ const int convex_create_account(const convex_p convex, const convex_account_p ac
     return result;
 }
 
-const int convex_request_funds(convex_p convex, const amount_t amount, const address_t address, amount_t *result_amount) {
-    response_t response;
-    memset(&response, 0, sizeof(response_t));
+/**
+ * Request funds for an account address from the test convex network.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] amount The amount to request.
+ *
+ * @param[in] address The account address to request for.
+ *
+ * @param[out] result_amount Pointer to an amount variable, where the amount of funds requested will be writtern.
+ *      This can be NULL if you do not wish to see the amount requested.
+ *
+ */
+int convex_request_funds(convex_p convex, const amount_t amount, const address_t address, amount_t *result_amount) {
 
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
@@ -390,11 +454,11 @@ const int convex_request_funds(convex_p convex, const amount_t amount, const add
     char data[120];
     sprintf(data, "{\"address\": \"#%ld\", \"amount\": %ld}", address, amount);
 
-    int result = curl_request_post(url, data, &response);
+    int result = curl_request_post(url, data, &convex->response);
     curl_url_cleanup(url);
-    if (result == CONVEX_OK && response.code == 200) {
+    if (result == CONVEX_OK && convex->response.code == 200) {
         if (result_amount) {
-            char *field_value = get_value_from_json(response.data, "value");
+            char *field_value = get_value_from_json(convex->response.data, "value");
             if (field_value) {
                 // printf("value: %s\n", field_value);
                 *result_amount = atol(field_value);
@@ -405,38 +469,45 @@ const int convex_request_funds(convex_p convex, const amount_t amount, const add
     else {
         result = CONVEX_ERROR_REQUEST_FUNDS_FAILED;
     }
-
-    response_clear(&response);
     return result;
 }
 
-const int convex_get_address(const convex_p convex, const char *name, const address_t address, address_t *result_address) {
+/**
+ * Get an adress using the provided account address.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] name Name of the library/function to get the address of.
+ *
+ * @param[out] result_address Pointer to an address variable to write the address to.
+ *
+ * @return CONVEX_OK if the address was found.
+ *
+ */
+int convex_get_address(const convex_p convex, const char *name, const address_t address, address_t *result_address) {
     if (result_address == NULL) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
-    // create a temp convex session for this request
-    convex_p convex_work = convex_init(convex_get_url(convex));
 
     char *query_text = malloc(strlen(name) + 20);
     sprintf(query_text, "(address %s)", name);
 
-    int result = convex_query(convex_work, query_text, address);
+    int result = convex_query(convex, query_text, address);
     if (result == CONVEX_OK) {
-        char *value = get_value_from_json(convex_work->response.data, "value");
+        char *value = get_value_from_json(convex->response.data, "value");
         if (value) {
             *result_address = atol(value);
             free(value);
         }
     }
     free(query_text);
-    convex_close(convex_work);
     return result;
 }
 
 /**
  * Execute a query on the convex network.
  *
-* @param[in] convex Convex data created by the `convex_init` function.
+ * @param[in] convex Convex data created by the `convex_init` function.
  *
  * @param[in] query The query string to execute.
  *
@@ -445,7 +516,7 @@ const int convex_get_address(const convex_p convex, const char *name, const addr
  * @return CONVEX_OK or CONVEX_ERROR.. if this function was succesfull
  *
  */
-const int convex_query(const convex_p convex, const char *query, const address_t address) {
+int convex_query(const convex_p convex, const char *query, const address_t address) {
 
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
@@ -483,7 +554,22 @@ const int convex_query(const convex_p convex, const char *query, const address_t
     return result;
 }
 
-const int convex_send( const convex_p convex, const char *transaction, const convex_account_p account, const address_t address) {
+/**
+ * Send a transaction to the convex network. You need to provide a valid account with the private key, since
+ * the send function needs to sign the transacation.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] transaction Transaction string to send to the convex network.
+ *
+ * @param[in] account Convex account to sign the transaction.
+ *
+ * @param[in] address Address of the account on the convex network.
+ *
+ * @returns CONVEX_OK if the transaction was sent successfuly.
+ *
+ */
+int convex_send( const convex_p convex, const char *transaction, const convex_account_p account, const address_t address) {
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
@@ -503,8 +589,8 @@ const int convex_send( const convex_p convex, const char *transaction, const con
     }
 
     // convert hash_str to hash_data bytes
-    char hash_data[32];
-    int hash_data_length = 32;
+    unsigned char hash_data[32];
+    size_t hash_data_length = 32;
 
     result = convex_utils_hex_to_bytes(hash_str, hash_data, &hash_data_length);
     if (result != CONVEX_OK) {
@@ -513,7 +599,7 @@ const int convex_send( const convex_p convex, const char *transaction, const con
 
     // sign hash bytes with account key
     unsigned char signed_data[64];
-    int signed_data_length = 64;
+    size_t signed_data_length = 64;
     result = convex_account_sign_data(account, hash_data, hash_data_length, signed_data, &signed_data_length);
     if (result != CONVEX_OK) {
         return result;

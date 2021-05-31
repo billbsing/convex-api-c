@@ -39,15 +39,15 @@ typedef unsigned long amount_t;
 
 
 extern convex_p convex_init(const char*);
-extern const int convex_close(convex_p);
+extern int convex_close(convex_p);
 extern const char * convex_get_url(const convex_p);
-extern const int convex_create_account(const convex_p, const convex_account_p, address_t *);
-extern const int convex_request_funds(convex_p, const amount_t, const address_t, amount_t *);
-extern const int convex_get_address(const convex_p, const char *, const address_t, address_t *);
-extern const int convex_query(const convex_p, const char *, const address_t);
-extern const int convex_send(const convex_p, const char *,const convex_account_p, address_t address);
+extern int convex_create_account(const convex_p, const convex_account_p, address_t *);
+extern int convex_request_funds(convex_p, const amount_t, const address_t, amount_t *);
+extern int convex_get_address(const convex_p, const char *, const address_t, address_t *);
+extern int convex_query(const convex_p, const char *, const address_t);
+extern int convex_send(const convex_p, const char *,const convex_account_p, address_t address);
 extern const char *convex_response_get_data(const convex_p);
-extern const bool convex_is_response(const convex_p);
-extern const long convex_response_get_code(const convex_p);
+extern bool convex_is_response(const convex_p);
+extern long convex_response_get_code(const convex_p);
 
 #endif              // CONVEX_H

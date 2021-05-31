@@ -277,8 +277,24 @@ const bool convex_account_is_equal(convex_account_p a, convex_account_p b) {
     return memcmp(ptr_a, ptr_b, CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH) == 0;
 }
 
-
-const int convex_account_sign_data(
+/**
+ * Sign hash and return the signature.
+ *
+ * @param[in] account Account that can do the signing.
+ *
+ * @param[in] hash_data Hash data as bytes.
+ *
+ * @param[in] hash_data_length Length of the hash data to sign.
+ *
+ * @param[out] signed_data Signed data to write in bytes.
+ *
+ * @param[out] signed_data_length Length of the sigend data buffer, after this call,
+ * the number of bytes writtern by the signing process.
+ *
+ * @return CONVEX_OK if the signing was successfull.
+ *
+ */
+int convex_account_sign_data(
         convex_account_p account,
         const void *hash_data,
         size_t hash_data_length,

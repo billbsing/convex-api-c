@@ -36,8 +36,9 @@ int main() {
     result = convex_send(convex, transaction, account, address);
     assert(result == CONVEX_OK);
 
+    const char *response_text = convex_response_get_data(convex);
+    // printf("send result: %s\n", response_text);
     assert(strcmp(convex->response.data, transaction_result) == 0);
-    // printf("send result: %s\n", convex->response.data);
 
     result = convex_close(convex);
     assert(result == CONVEX_OK);

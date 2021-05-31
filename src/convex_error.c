@@ -8,6 +8,7 @@
  *
  */
 
+#include <string.h>
 #include "convex_error.h"
 
 error_message_t message_list[] = {

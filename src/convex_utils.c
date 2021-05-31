@@ -8,11 +8,12 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
+#include <string.h>
 
 #include "convex_error.h"
 
 /**
- * @private
+ * Calculate a sha3-256 hash on some data.
  *
  */
 void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, unsigned char *hash_data, unsigned int *hash_length) {
@@ -42,7 +43,7 @@ void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, u
  * @return CONVEX_OK if the function was successfull.
  *
  */
-const int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, char *buffer, int *buffer_length) {
+int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, char *buffer, int *buffer_length) {
     int index = 0;
     char *ptr = buffer;
 
@@ -88,7 +89,22 @@ const int convex_utils_public_key_to_hex(const char *key_bytes, const int key_le
     return CONVEX_OK;
 }
 
-const int convex_utils_bytes_to_hex(const unsigned char *data, const int data_length, char *buffer, int *buffer_length) {
+/**
+ * Convert byte data to hex string.
+ *
+ * @param[in] data Data bytes to read.
+ *
+ * @param[in] data_length Number of data bytes to convert.
+ *
+ * @param[out] buffer String buffer to write the hex text.
+ *
+ * @param[out] buffer_length Total length of the buffer before calling this function, after this function is called
+ *  the string length of the buffer.
+ *
+ * @returns CONVEX_OK if the conversion was successfull.
+ *
+ */
+int convex_utils_bytes_to_hex(const unsigned char *data, const int data_length, char *buffer, int *buffer_length) {
     if (buffer_length == NULL) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
@@ -107,7 +123,21 @@ const int convex_utils_bytes_to_hex(const unsigned char *data, const int data_le
     return CONVEX_OK;
 }
 
-const int convex_utils_hex_to_bytes(const char *data, unsigned char *buffer, int *buffer_length) {
+/**
+ * Convert hex string to bytes.
+ *
+ * @param[in] data Hex string to read.
+ *
+ *
+ * @param[out] buffer Data buffer to write the bytes.
+ *
+ * @param[out] buffer_length Total length of the data buffer before calling this function, after this function is called
+ *  the number of bytes writtern.
+ *
+ * @returns CONVEX_OK if the conversion was successfull.
+ *
+ */
+int convex_utils_hex_to_bytes(const char *data, unsigned char *buffer, int *buffer_length) {
     if (buffer_length == NULL) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
