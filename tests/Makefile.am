@@ -7,6 +7,9 @@ test_convex_create_account \
 test_convex_request_funds \
 test_convex_get_address \
 test_convex_send \
+test_convex_transfer \
+test_convex_get_account_information \
+test_convex_get_account_balance \
 test_convex_account_init \
 test_convex_account_export_text \
 test_convex_account_export_file \
@@ -22,6 +25,9 @@ test_convex_create_account \
 test_convex_request_funds \
 test_convex_get_address \
 test_convex_send \
+test_convex_transfer \
+test_convex_get_account_information \
+test_convex_get_account_balance \
 test_convex_account_init \
 test_convex_account_export_text \
 test_convex_account_export_file \

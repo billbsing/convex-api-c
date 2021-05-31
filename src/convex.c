@@ -164,9 +164,49 @@ int curl_request_post(CURLU *url, const char *data, response_p response) {
     curl_slist_free_all(header_list);
     curl_easy_cleanup(curl);
     return CONVEX_OK;
-
 }
 
+
+/**
+ * @private
+ *
+ * Do a curl GET request with the convex world api.
+ *
+ * @param[in] url Curl URL with the full convex world api.
+ *
+ * @param[out] repsonse Response_t record that will be filled in by the request. You need to
+ *  call `response_close()` after this to clear out the allocated result string.
+ *
+ */
+int curl_request_get(CURLU *url, response_p response) {
+
+    CURLUcode result = 0;
+
+    struct curl_slist *header_list = NULL;
+    header_list = curl_slist_append(header_list, "Content-Type: application/json");
+
+    CURL *curl = curl_easy_init();
+    if (!curl) {
+        return CONVEX_ERROR_CURL_INIT;
+    }
+
+    // clear out the response before the request
+    response_clear(response);
+
+    result = curl_easy_setopt(curl, CURLOPT_CURLU, url);
+    result = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_list);
+    result = curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+    result = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+    result = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)response);
+    result = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+    result = curl_easy_perform(curl);
+    if (result == CURLE_OK) {
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response->code);
+    }
+    curl_slist_free_all(header_list);
+    curl_easy_cleanup(curl);
+    return CONVEX_OK;
+}
 /**
  * @private
  *
@@ -484,7 +524,7 @@ int convex_request_funds(convex_p convex, const amount_t amount, const address_t
  * @return CONVEX_OK if the address was found.
  *
  */
-int convex_get_address(const convex_p convex, const char *name, const address_t address, address_t *result_address) {
+int convex_get_address(convex_p convex, const char *name, const address_t address, address_t *result_address) {
     if (result_address == NULL) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
@@ -516,7 +556,7 @@ int convex_get_address(const convex_p convex, const char *name, const address_t 
  * @return CONVEX_OK or CONVEX_ERROR.. if this function was succesfull
  *
  */
-int convex_query(const convex_p convex, const char *query, const address_t address) {
+int convex_query(convex_p convex, const char *query, const address_t address) {
 
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
@@ -569,7 +609,7 @@ int convex_query(const convex_p convex, const char *query, const address_t addre
  * @returns CONVEX_OK if the transaction was sent successfuly.
  *
  */
-int convex_send( const convex_p convex, const char *transaction, const convex_account_p account, const address_t address) {
+int convex_send(convex_p convex, const char *transaction, const convex_account_p account, const address_t address) {
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
@@ -617,6 +657,114 @@ int convex_send( const convex_p convex, const char *transaction, const convex_ac
     const char *public_key = convex_account_get_public_key(account);
     result = convex_transaction_submit(convex, address, public_key, hash_str, signed_hex);
 
+    return result;
+}
+
+/**
+ * Transfer funds from an account to another account address.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] to_address Address of the account you wish to move the coins too.
+ *
+ * @param[in] amount The amount of funds to transfer.
+ *
+ * @param[in] account The account that has the nessary keys to perform the transfer.
+ *
+ * @param[in] from_address Address of the account that has the funds to transfer from.
+ *
+ * @return CONVEX_OK if the transfer was succesfull.
+ *
+ */
+int convex_transfer(convex_p convex, address_t to_address, amount_t amount, convex_account_p account, address_t from_address) {
+    if (!convex) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (to_address == 0) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (amount == 0) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (!account) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (from_address == 0) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    char transaction[120];
+    int result;
+    sprintf(transaction, "(transfer #%d %d)", to_address, amount);
+    result = convex_send(convex, transaction, account, from_address);
+    return result;
+}
+
+/**
+ * Get account information for an account.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] address Address of the account to get information on.
+ *
+ * @return CONVEX_OK if the result has been successfuly writtern to the reponse structure.
+ *
+ */
+int convex_get_account_information(convex_p convex, const address_t address) {
+    if (!convex) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (address == 0) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+
+    char url_text[120];
+    sprintf(url_text, "/api/v1/accounts/%d", address);
+    CURLU *url = convex_create_curl_url(convex, url_text);
+    if (!url) {
+        return CONVEX_ERROR_INVALID_URL;
+    }
+
+    int result = curl_request_get(url, &convex->response);
+    curl_url_cleanup(url);
+    if ( !(result == CONVEX_OK || convex->response.code == 200)) {
+        result = CONVEX_ERROR_NO_ACCOUNT_ADDRESS;
+    }
+    return result;
+}
+
+/**
+ * Get the account balance.
+ *
+ * @param[in] convex Convex data created by the `convex_init` function.
+ *
+ * @param[in] address Address of the account to get information on.
+ *
+ * @param[out] balance Pointer to a variable that will have the current balannce of the account.
+ *
+ * @return CONVEX_OK if the balance was retreived successfuly.
+ *
+ */
+int convex_get_account_balance(convex_p convex, const address_t address, amount_t *balance) {
+    if (!convex) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (address == 0) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    if (!balance) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    int result;
+    char query_text[120];
+    sprintf(query_text, "(balance #%d)", address);
+    result = convex_query(convex, query_text, address);
+    if (result == CONVEX_OK && convex->response.code == 200) {
+        char *value = get_value_from_json(convex->response.data, "value");
+        if (value) {
+            *balance = atol(value);
+            free(value);
+        }
+    }
     return result;
 }
 

@@ -1,5 +1,5 @@
 /*
- * test_convex_send
+ * test_convex_transfer
  *
  */
 
@@ -13,12 +13,12 @@ int main() {
     const char *url = "https://convex.world";
     int result;
     address_t address;
+    address_t to_address = 9;
     amount_t amount = 100000000;
     amount_t result_amount;
     const char *transaction = "(map inc [1 2 3 4 5])";
     const char *transaction_result = "{\"value\":[2,3,4,5,6]}";
 
-    // test query
     convex = convex_init(url);
     assert(convex);
 
@@ -33,11 +33,8 @@ int main() {
     assert(result == CONVEX_OK);
     assert(result_amount == amount);
 
-    result = convex_send(convex, transaction, account, address);
+    result = convex_transfer(convex, to_address, 10000, account, address);
     assert(result == CONVEX_OK);
-
-    //printf("send result: %s\n", convex->response.data);
-    assert(strcmp(convex->response.data, transaction_result) == 0);
 
     result = convex_close(convex);
     assert(result == CONVEX_OK);
