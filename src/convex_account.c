@@ -95,7 +95,7 @@ convex_account_p convex_account_init_from_text(const char *key_text, const char 
 
     BIO *memory = BIO_new(BIO_s_mem());
     BIO_puts(memory, key_text);
-    account->key = PEM_read_bio_PrivateKey(memory, NULL, NULL, (const char *)password);
+    account->key = PEM_read_bio_PrivateKey(memory, NULL, NULL, (void *)password);
     BIO_free_all(memory);
     if (!account->key) {
         convex_account_close(account);
@@ -122,7 +122,7 @@ convex_account_p convex_account_init_from_file(FILE *fp, const char *password) {
         return NULL;
     }
 
-    account->key = PEM_read_PrivateKey(fp, NULL, NULL, (const char *)password);
+    account->key = PEM_read_PrivateKey(fp, NULL, NULL, (void *)password);
     if (!account->key) {
         convex_account_close(account);
         return NULL;
@@ -172,7 +172,7 @@ int convex_account_export_to_file(convex_account_p account, const char *password
         return CONVEX_ERROR_SSL_CANNOT_FIND_CIPHER;
     }
 
-    PEM_write_PKCS8PrivateKey(fp, account->key, cipher, NULL, 0, 0, password);
+    PEM_write_PKCS8PrivateKey(fp, account->key, cipher, NULL, 0, 0, (void *)password);
 
     return CONVEX_OK;
 }
@@ -212,7 +212,7 @@ int convex_account_export_to_text(convex_account_p account, const char *password
     BIO *memory = BIO_new(BIO_s_mem());
 
     // char *kstr = strdup(password);
-    PEM_write_bio_PKCS8PrivateKey(memory, account->key, cipher, NULL, 0, 0, password);
+    PEM_write_bio_PKCS8PrivateKey(memory, account->key, cipher, NULL, 0, 0, (void *)password);
     // free(kstr);
 
     BUF_MEM *bptr;
@@ -297,9 +297,9 @@ const bool convex_account_is_equal(convex_account_p a, convex_account_p b) {
 int convex_account_sign_data(
         convex_account_p account,
         const void *hash_data,
-        size_t hash_data_length,
+        int hash_data_length,
         unsigned char *signed_data,
-        size_t *signed_data_length
+        int *signed_data_length
     ) {
 
     if (!signed_data_length) {
@@ -318,8 +318,10 @@ int convex_account_sign_data(
         return CONVEX_ERROR_SSL_CANNOT_INIT;
     }
 
+    size_t signed_length = *signed_data_length;
     EVP_DigestSignInit(ctx, &key_ctx, NULL, NULL, account->key);
-    EVP_DigestSign(ctx, signed_data, signed_data_length, hash_data, hash_data_length);
+    EVP_DigestSign(ctx, signed_data, &signed_length, hash_data, (size_t) hash_data_length);
     EVP_MD_CTX_free(ctx);
+    *signed_data_length = (int) signed_length;
     return CONVEX_OK;
 }

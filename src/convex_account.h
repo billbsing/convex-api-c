@@ -39,7 +39,7 @@ extern const unsigned char *convex_account_get_public_key_bytes(convex_account_p
 extern int convex_account_public_key(convex_account_p account, char *, int *);
 extern const char *convex_account_get_public_key(convex_account_p);
 extern const bool convex_account_is_equal(convex_account_p, convex_account_p);
-extern int convex_account_sign_data(convex_account_p, const void *, size_t, unsigned char *, size_t*);
+extern int convex_account_sign_data(convex_account_p, const void *, int, unsigned char *, int *);
 
 
 #endif              // CONVEX_ACCOUNT_H

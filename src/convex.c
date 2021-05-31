@@ -9,6 +9,7 @@
 #include <stdbool.h>
 
 #include "convex.h"
+#include "convex_utils.h"
 
 /**
  * @mainpage convex-api-c library
@@ -629,7 +630,7 @@ int convex_send(convex_p convex, const char *transaction, const convex_account_p
 
     // convert hash_str to hash_data bytes
     unsigned char hash_data[32];
-    size_t hash_data_length = 32;
+    int hash_data_length = 32;
 
     result = convex_utils_hex_to_bytes((const char *)hash_str, hash_data, &hash_data_length);
     if (result != CONVEX_OK) {
@@ -638,7 +639,7 @@ int convex_send(convex_p convex, const char *transaction, const convex_account_p
 
     // sign hash bytes with account key
     unsigned char signed_data[64];
-    size_t signed_data_length = 64;
+    int signed_data_length = 64;
     result = convex_account_sign_data(account, hash_data, hash_data_length, signed_data, &signed_data_length);
     if (result != CONVEX_OK) {
         return result;

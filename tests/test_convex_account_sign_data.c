@@ -35,18 +35,17 @@ const char *TEST_PASSWORD = "secret";
     account = convex_account_init_from_text(PRIVATE_TEST_KEY_TEXT, TEST_PASSWORD);
     assert(account);
 
-    size_t signed_data_length = 64;
+    int signed_data_length = 64;
     unsigned char signed_data[signed_data_length];
     memset(signed_data, 0, signed_data_length);
 
     result = convex_account_sign_data(account, HASH_DATA, sizeof(HASH_DATA), signed_data, &signed_data_length);
     assert(result == CONVEX_OK);
 
-    // printf("sign data length %d\n", signed_data_length);
-
     int sign_text_length = (64 * 2) + 1;
     char sign_text[sign_text_length];
     result = convex_utils_bytes_to_hex(signed_data, signed_data_length, sign_text, &sign_text_length);
+    assert(result == CONVEX_OK);
 
 
     // printf("signed data: %s\n", sign_text);
