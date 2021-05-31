@@ -343,7 +343,6 @@ int convex_transaction_submit(
 
     int result = curl_request_post(url, data, &convex->response);
     curl_url_cleanup(url);
-    printf("response %d %s\n", convex->response.code, convex->response.data);
     if ( !(result == CONVEX_OK || convex->response.code == 200)) {
         result = CONVEX_ERROR_SUBMIT_FAILED;
     }
@@ -632,7 +631,7 @@ int convex_send(convex_p convex, const char *transaction, const convex_account_p
     unsigned char hash_data[32];
     size_t hash_data_length = 32;
 
-    result = convex_utils_hex_to_bytes(hash_str, hash_data, &hash_data_length);
+    result = convex_utils_hex_to_bytes((const char *)hash_str, hash_data, &hash_data_length);
     if (result != CONVEX_OK) {
         return result;
     }
@@ -694,7 +693,7 @@ int convex_transfer(convex_p convex, address_t to_address, amount_t amount, conv
     }
     char transaction[120];
     int result;
-    sprintf(transaction, "(transfer #%d %d)", to_address, amount);
+    sprintf(transaction, "(transfer #%ld %ld)", to_address, amount);
     result = convex_send(convex, transaction, account, from_address);
     return result;
 }
@@ -718,7 +717,7 @@ int convex_get_account_information(convex_p convex, const address_t address) {
     }
 
     char url_text[120];
-    sprintf(url_text, "/api/v1/accounts/%d", address);
+    sprintf(url_text, "/api/v1/accounts/%ld", address);
     CURLU *url = convex_create_curl_url(convex, url_text);
     if (!url) {
         return CONVEX_ERROR_INVALID_URL;
@@ -756,7 +755,7 @@ int convex_get_account_balance(convex_p convex, const address_t address, amount_
     }
     int result;
     char query_text[120];
-    sprintf(query_text, "(balance #%d)", address);
+    sprintf(query_text, "(balance #%ld)", address);
     result = convex_query(convex, query_text, address);
     if (result == CONVEX_OK && convex->response.code == 200) {
         char *value = get_value_from_json(convex->response.data, "value");
@@ -786,7 +785,7 @@ const char * convex_response_get_data(const convex_p convex) {
  *
  * @returns true if a response is returned.
  */
-const bool convex_is_response(const convex_p convex) {
+bool convex_is_response(const convex_p convex) {
     return convex->response.size > 0;
 }
 
@@ -797,6 +796,6 @@ const bool convex_is_response(const convex_p convex) {
  *
  * @returns long response code. Normally this will be 200 if request was succesfull.
  */
-const long convex_response_get_code(const convex_p convex) {
+long convex_response_get_code(const convex_p convex) {
     return convex->response.code;
 }

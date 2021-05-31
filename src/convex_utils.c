@@ -43,7 +43,7 @@ void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, u
  * @return CONVEX_OK if the function was successfull.
  *
  */
-int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, char *buffer, int *buffer_length) {
+int convex_utils_public_key_to_hex(const unsigned char *key_bytes, const int key_length, char *buffer, int *buffer_length) {
     int index = 0;
     char *ptr = buffer;
 

@@ -38,16 +38,16 @@ AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
 
 JSON_LIBS=
-PKG_CHECK_MODULES(JSON, json-c,, [AC_MSG_WARN("json-c not found")])
+# PKG_CHECK_MODULES(JSON, json-c,, [AC_MSG_WARN("json-c not found")])
 
-if test "$JSON_LIBS" == ""; then
-PKG_CHECK_MODULES(JSON, json,
-		  [AC_DEFINE([HAVE_JSON_0],[1],[Use JSON0])],
-		  [AC_MSG_ERROR("json0 missing")])
-fi
+# if test "$JSON_LIBS" == ""; then
+# PKG_CHECK_MODULES(JSON, json,
+# 		  [AC_DEFINE([HAVE_JSON_0],[1],[Use JSON0])],
+# 		  [AC_MSG_ERROR("json0 missing")])
+# fi
 
-AC_SUBST(JSON_CFLAGS)
-AC_SUBST(JSON_LIBS)
+# AC_SUBST(JSON_CFLAGS)
+# AC_SUBST(JSON_LIBS)
 
 # Checks for header files.
 AC_CHECK_HEADERS([stddef.h stdint.h stdio.h stdlib.h string.h])
