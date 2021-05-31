@@ -14,7 +14,7 @@ int main() {
     int result;
     address_t address;
     address_t to_address = 9;
-    amount_t amount = 100000000;
+    amount_t amount = 10000000;
     amount_t result_amount;
     const char *transaction = "(map inc [1 2 3 4 5])";
     const char *transaction_result = "{\"value\":[2,3,4,5,6]}";

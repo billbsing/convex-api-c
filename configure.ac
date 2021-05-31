@@ -1,4 +1,4 @@
-AC_INIT([convex-api-c library], 1.0)
+AC_INIT([convex-api-c library], 0.01)
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AC_CONFIG_SRCDIR([src/])

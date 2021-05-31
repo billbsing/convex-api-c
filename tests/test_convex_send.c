@@ -13,7 +13,7 @@ int main() {
     const char *url = "https://convex.world";
     int result;
     address_t address;
-    amount_t amount = 100000000;
+    amount_t amount = 10000000;
     amount_t result_amount;
     const char *transaction = "(map inc [1 2 3 4 5])";
     const char *transaction_result = "{\"value\":[2,3,4,5,6]}";
