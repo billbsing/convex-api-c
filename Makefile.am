@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = src tests examples
-dist_doc_DATA = README
+# dist_doc_DATA = README
 CLEANFILES = *~ \#*
 
 doxygen.config: Makefile.in

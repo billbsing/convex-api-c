@@ -42,9 +42,13 @@ void caclulate_hash_sha3_256(const unsigned char *data, const int data_length, u
  * @return CONVEX_OK if the function was successfull.
  *
  */
-int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, char *buffer, int *buffer_length) {
+const int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, char *buffer, int *buffer_length) {
     int index = 0;
     char *ptr = buffer;
+
+    if (buffer_length == NULL) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
 
     unsigned char hash_buffer[key_length * 2];
     int hash_buffer_length = key_length * 2;
@@ -81,5 +85,45 @@ int convex_utils_public_key_to_hex(const char *key_bytes, const int key_length, 
     }
     *ptr = 0;
     *buffer_length = (key_length * 2) + 1;
+    return CONVEX_OK;
+}
+
+const int convex_utils_bytes_to_hex(const unsigned char *data, const int data_length, char *buffer, int *buffer_length) {
+    if (buffer_length == NULL) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+
+    if ( (data_length * 2) + 1 > *buffer_length) {
+        *buffer_length = (data_length * 2) + 1;
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    char *ptr = buffer;
+    for (int index = 0; index < data_length; index ++) {
+        sprintf(ptr, "%02x", data[index]);
+        ptr += 2;
+    }
+    *buffer_length = (data_length * 2) + 1;
+    *ptr = 0;
+    return CONVEX_OK;
+}
+
+const int convex_utils_hex_to_bytes(const char *data, unsigned char *buffer, int *buffer_length) {
+    if (buffer_length == NULL) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+    int data_length = strlen(data);
+    if ( (data_length / 2) > *buffer_length) {
+        *buffer_length = (data_length / 2);
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+
+    char *ptr = buffer;
+    int length = 0;
+    for (int index = 0; index < data_length; index += 2) {
+        sscanf(&data[index], "%02x", ptr);
+        ptr ++;
+        length ++;
+    }
+    *buffer_length = length;
     return CONVEX_OK;
 }

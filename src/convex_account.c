@@ -169,7 +169,7 @@ int convex_account_export_to_file(convex_account_p account, const char *password
 
     const EVP_CIPHER *cipher = EVP_aes_256_cfb();
     if (!cipher) {
-        return CONVEX_ACCOUNT_SSL_ERROR;
+        return CONVEX_ERROR_SSL_CANNOT_FIND_CIPHER;
     }
 
     PEM_write_PKCS8PrivateKey(fp, account->key, cipher, NULL, 0, 0, password);
@@ -206,7 +206,7 @@ int convex_account_export_to_text(convex_account_p account, const char *password
 
     const EVP_CIPHER *cipher = EVP_aes_256_cfb();
     if (!cipher) {
-        return CONVEX_ACCOUNT_SSL_ERROR;
+        return CONVEX_ERROR_SSL_CANNOT_FIND_CIPHER;
     }
 
     BIO *memory = BIO_new(BIO_s_mem());
@@ -277,3 +277,33 @@ const bool convex_account_is_equal(convex_account_p a, convex_account_p b) {
     return memcmp(ptr_a, ptr_b, CONVEX_ACCOUNT_PUBLIC_KEY_LENGTH) == 0;
 }
 
+
+const int convex_account_sign_data(
+        convex_account_p account,
+        const void *hash_data,
+        size_t hash_data_length,
+        unsigned char *signed_data,
+        size_t *signed_data_length
+    ) {
+
+    if (!signed_data_length) {
+        return CONVEX_ERROR_INVALID_PARAMETER;
+    }
+
+    int sign_length = EVP_PKEY_size(account->key);
+    if ( sign_length > *signed_data_length ) {
+        *signed_data_length = sign_length;
+        return CONVEX_ERROR_SIGN_DATA_TOO_SMALL;
+    }
+
+    EVP_PKEY_CTX *key_ctx = NULL;
+    EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+    if (!ctx) {
+        return CONVEX_ERROR_SSL_CANNOT_INIT;
+    }
+
+    EVP_DigestSignInit(ctx, &key_ctx, NULL, NULL, account->key);
+    EVP_DigestSign(ctx, signed_data, signed_data_length, hash_data, hash_data_length);
+    EVP_MD_CTX_free(ctx);
+    return CONVEX_OK;
+}
