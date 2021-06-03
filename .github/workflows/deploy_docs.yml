@@ -1,10 +1,8 @@
-name: Testing
+name: Deploy Docs
 
 on:
   push:
-    branches: [ develop, release ]
-  pull_request:
-    branches: [ develop ]
+    branches: [ release ]
 
 jobs:
   build:
@@ -20,7 +18,13 @@ jobs:
       run: ./configure
     - name: make
       run: make
-    - name: make check
-      run: make check
-
-
+    - name: make docs
+      run: |
+        make docs
+        touch docs/html/.nojekyll
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v2.5.0
+      env:
+        PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: docs/html

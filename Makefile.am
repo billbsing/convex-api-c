@@ -13,6 +13,5 @@ EXAMPLE_PATTERNS	= *.c\n \
 OUTPUT_DIRECTORY        = docs/\n \
 OPTIMIZE_OUTPUT_FOR_C   = YES\n \
 EXTRACT_ALL             = YES" > doxygen.config
-
 docs: doxygen.config
 	doxygen doxygen.config
