@@ -2,6 +2,10 @@
 
 For more information about [convex](https://convex.world)
 
+## Documentation
+
+[API Documentation](https://billbsing.github.io/convex-api-c/)
+
 ## Building this library
 
 First run autoreconf
