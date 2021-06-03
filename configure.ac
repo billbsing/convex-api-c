@@ -17,8 +17,41 @@ AC_CONFIG_MACRO_DIRS([m4])
 PKG_CHECK_MODULES([libcrypto], [libssl],,
     [AC_MSG_ERROR([No pkg-config for libssl])])
 
-AC_CHECK_LIB([crypto], [EVP_PKEY_keygen],,[AC_MSG_ERROR([libssl required!])])
-AC_CHECK_LIB([crypto], [EVP_PKEY_keygen_init],,[AC_MSG_ERROR([libssl required!])])
+AC_CHECK_LIB([crypto], [EVP_PKEY_keygen],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([crypto], [EVP_PKEY_keygen_init],,[AC_MSG_ERROR([libcrypto ssl required!])])
+
+AC_CHECK_LIB([ssl], [BIO_s_mem],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([ssl], [BIO_new],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([ssl], [BIO_puts],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([ssl], [BIO_free_all],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([ssl], [BIO_get_mem_data],,[AC_MSG_ERROR([libcrypto ssl required!])])
+
+
+# AC_CHECK_LIB([crypto], [EVP_aes_256_cfb],,[AC_MSG_ERROR([libcrypto ssl required!])])
+
+# AC_CHECK_LIB([crypto], [EVP_DigestInit_ex],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_DigestFinal_ex],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_DigestSignInit],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_DigestSign],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_DigestUpdate],,[AC_MSG_ERROR([libcrypto ssl required!])])
+
+
+# AC_CHECK_LIB([crypto], [EVP_MD_CTX_new],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_MD_CTX_free],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_CTX_free],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_CTX_new_id],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_free],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_get_raw_public_key],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_keygen],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_keygen_init],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_PKEY_size],,[AC_MSG_ERROR([libcrypto ssl required!])])
+# AC_CHECK_LIB([crypto], [EVP_sha3_256],,[AC_MSG_ERROR([libcrypto ssl required!])])
+
+
+AC_CHECK_LIB([crypto], [PEM_read_bio_PrivateKey],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([crypto], [PEM_read_PrivateKey],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([crypto], [PEM_write_PKCS8PrivateKey],,[AC_MSG_ERROR([libcrypto ssl required!])])
+AC_CHECK_LIB([crypto], [PEM_write_bio_PKCS8PrivateKey],,[AC_MSG_ERROR([libcrypto ssl required!])])
 
 
 AC_SUBST(SSL_CFLAGS)

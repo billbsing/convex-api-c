@@ -21,13 +21,20 @@
  * + openssl
  * + libcurl
  *
- * See `convex.c` for the API documentation.
+ * See `convex.c` and  `convex_account.c` for the API documentation.
  *
  * See an example of using the convex-api-c library:
  *
+ * ## Examples
+ *
+ * ### Example: Query the network
  * \include example_convex_query.c
  *
+ * ### Example: Generate a new keypair, create an account and save the keys to an encrypted file
+ * \include example_convex_account.c
  *
+ * ### Example: Send a transaction to the network using an account and keypair
+ * \include example_convex_send.c
  *
  */
 
@@ -518,6 +525,8 @@ int convex_request_funds(convex_p convex, const amount_t amount, const address_t
  * @param[in] convex Convex data created by the `convex_init` function.
  *
  * @param[in] name Name of the library/function to get the address of.
+ *
+ * @param[in] address Address of the caller.
  *
  * @param[out] result_address Pointer to an address variable to write the address to.
  *
