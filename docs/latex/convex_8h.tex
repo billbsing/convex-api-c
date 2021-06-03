@@ -1,0 +1,361 @@
+\hypertarget{convex_8h}{}\doxysection{src/convex.h File Reference}
+\label{convex_8h}\index{src/convex.h@{src/convex.h}}
+{\ttfamily \#include \char`\"{}convex\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}convex\+\_\+default.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}convex\+\_\+account.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$curl/curl.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structresponse__t}{response\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structconvex__t}{convex\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{convex_8h_a1f672842beaeeeb118a74c1b198b94e3}{MAX\+\_\+\+SOURCE\+\_\+\+SIZE}}~(1024 $\ast$ 1024)
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{structresponse__t}{response\+\_\+t}} $\ast$ \mbox{\hyperlink{convex_8h_a3f99f1ab7efcad6cf519311ecbe7a5f4}{response\+\_\+p}}
+\item 
+typedef \mbox{\hyperlink{structconvex__t}{convex\+\_\+t}} $\ast$ \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}
+\item 
+typedef unsigned long \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}
+\item 
+typedef unsigned long \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}} \mbox{\hyperlink{convex_8h_a564bc3ff4f809a4e0f4141b73af1db40}{convex\+\_\+init}} (const char $\ast$)
+\item 
+int \mbox{\hyperlink{convex_8h_aa4cea140a8e11d98e627e7ff034e310f}{convex\+\_\+close}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}})
+\item 
+const char $\ast$ \mbox{\hyperlink{convex_8h_aabad216914bc185e812ed7d77dd57102}{convex\+\_\+get\+\_\+url}} (const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}})
+\item 
+int \mbox{\hyperlink{convex_8h_a50550e2192358f1e57945637461d1786}{convex\+\_\+create\+\_\+account}} (const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}, \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}} $\ast$)
+\item 
+int \mbox{\hyperlink{convex_8h_ad03dc21b6c582b861c68d42c49fe391f}{convex\+\_\+request\+\_\+funds}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}}, const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}, \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}} $\ast$)
+\item 
+int \mbox{\hyperlink{convex_8h_a30f4619c8ca7837320740f07425fb7ed}{convex\+\_\+get\+\_\+address}} (const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const char $\ast$, const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}, \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}} $\ast$)
+\item 
+int \mbox{\hyperlink{convex_8h_a2c711c4b4349f2fff09ddbfa24e14ce6}{convex\+\_\+query}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const char $\ast$, const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}})
+\item 
+int \mbox{\hyperlink{convex_8h_a668445520ccdc565e1cae1d9592f1997}{convex\+\_\+send}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const char $\ast$, const \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}, \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}} address)
+\item 
+int \mbox{\hyperlink{convex_8h_aea4373f0d36953bd42e596252d5b755b}{convex\+\_\+transfer}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}, \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}}, \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}, \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}})
+\item 
+int \mbox{\hyperlink{convex_8h_a0c8c124dc1e3ad4fe555b02cc669f4ec}{convex\+\_\+get\+\_\+account\+\_\+information}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}})
+\item 
+int \mbox{\hyperlink{convex_8h_ad6645aa3a294de82cadf79677b94d0e8}{convex\+\_\+get\+\_\+account\+\_\+balance}} (\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}, const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}, \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}} $\ast$)
+\item 
+const char $\ast$ \mbox{\hyperlink{convex_8h_a782e8fd4d5651b4af4ffa3bd8513c55a}{convex\+\_\+response\+\_\+get\+\_\+data}} (const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}})
+\item 
+bool \mbox{\hyperlink{convex_8h_a14cd0595f5c7835db48823164f05d4db}{convex\+\_\+is\+\_\+response}} (const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}})
+\item 
+long \mbox{\hyperlink{convex_8h_aab2c86d24b672c68ca4b95b761f98256}{convex\+\_\+response\+\_\+get\+\_\+code}} (const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{convex_8h_a1f672842beaeeeb118a74c1b198b94e3}\label{convex_8h_a1f672842beaeeeb118a74c1b198b94e3}} 
+\index{convex.h@{convex.h}!MAX\_SOURCE\_SIZE@{MAX\_SOURCE\_SIZE}}
+\index{MAX\_SOURCE\_SIZE@{MAX\_SOURCE\_SIZE}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_SOURCE\_SIZE}{MAX\_SOURCE\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+SOURCE\+\_\+\+SIZE~(1024 $\ast$ 1024)}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}\label{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}} 
+\index{convex.h@{convex.h}!address\_t@{address\_t}}
+\index{address\_t@{address\_t}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{address\_t}{address\_t}}
+{\footnotesize\ttfamily typedef unsigned long \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}
+
+\mbox{\Hypertarget{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}\label{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}} 
+\index{convex.h@{convex.h}!amount\_t@{amount\_t}}
+\index{amount\_t@{amount\_t}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{amount\_t}{amount\_t}}
+{\footnotesize\ttfamily typedef unsigned long \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}}}
+
+\mbox{\Hypertarget{convex_8h_a8290b3691d04122de0e81b06e1a531ef}\label{convex_8h_a8290b3691d04122de0e81b06e1a531ef}} 
+\index{convex.h@{convex.h}!convex\_p@{convex\_p}}
+\index{convex\_p@{convex\_p}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_p}{convex\_p}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{structconvex__t}{convex\+\_\+t}}$\ast$ \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}
+
+\mbox{\Hypertarget{convex_8h_a3f99f1ab7efcad6cf519311ecbe7a5f4}\label{convex_8h_a3f99f1ab7efcad6cf519311ecbe7a5f4}} 
+\index{convex.h@{convex.h}!response\_p@{response\_p}}
+\index{response\_p@{response\_p}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{response\_p}{response\_p}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{structresponse__t}{response\+\_\+t}}$\ast$ \mbox{\hyperlink{convex_8h_a3f99f1ab7efcad6cf519311ecbe7a5f4}{response\+\_\+p}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{convex_8h_aa4cea140a8e11d98e627e7ff034e310f}\label{convex_8h_aa4cea140a8e11d98e627e7ff034e310f}} 
+\index{convex.h@{convex.h}!convex\_close@{convex\_close}}
+\index{convex\_close@{convex\_close}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_close()}{convex\_close()}}
+{\footnotesize\ttfamily int convex\+\_\+close (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex }\end{DoxyParamCaption})}
+
+Closes a convex , and frees the memory saved with the convex data.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if free memmory was successfull. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a50550e2192358f1e57945637461d1786}\label{convex_8h_a50550e2192358f1e57945637461d1786}} 
+\index{convex.h@{convex.h}!convex\_create\_account@{convex\_create\_account}}
+\index{convex\_create\_account@{convex\_create\_account}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_create\_account()}{convex\_create\_account()}}
+{\footnotesize\ttfamily int convex\+\_\+create\+\_\+account (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account,  }\item[{unsigned long $\ast$}]{address }\end{DoxyParamCaption})}
+
+Create a new account with the convex network.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex handle with the convex netwok data.\\
+\hline
+\mbox{\texttt{ in}}  & {\em account} & Convex account with a valid public/private key.\\
+\hline
+\mbox{\texttt{ out}}  & {\em address} & Pointer to an address var that will contain the new address.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the create account was valid and the new address will be set. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_ad6645aa3a294de82cadf79677b94d0e8}\label{convex_8h_ad6645aa3a294de82cadf79677b94d0e8}} 
+\index{convex.h@{convex.h}!convex\_get\_account\_balance@{convex\_get\_account\_balance}}
+\index{convex\_get\_account\_balance@{convex\_get\_account\_balance}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_get\_account\_balance()}{convex\_get\_account\_balance()}}
+{\footnotesize\ttfamily int convex\+\_\+get\+\_\+account\+\_\+balance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{address,  }\item[{\mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}} $\ast$}]{balance }\end{DoxyParamCaption})}
+
+Get the account balance.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Address of the account to get information on.\\
+\hline
+\mbox{\texttt{ out}}  & {\em balance} & Pointer to a variable that will have the current balannce of the account.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the balance was retreived successfuly. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a0c8c124dc1e3ad4fe555b02cc669f4ec}\label{convex_8h_a0c8c124dc1e3ad4fe555b02cc669f4ec}} 
+\index{convex.h@{convex.h}!convex\_get\_account\_information@{convex\_get\_account\_information}}
+\index{convex\_get\_account\_information@{convex\_get\_account\_information}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_get\_account\_information()}{convex\_get\_account\_information()}}
+{\footnotesize\ttfamily int convex\+\_\+get\+\_\+account\+\_\+information (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{address }\end{DoxyParamCaption})}
+
+Get account information for an account.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Address of the account to get information on.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the result has been successfuly writtern to the reponse structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a30f4619c8ca7837320740f07425fb7ed}\label{convex_8h_a30f4619c8ca7837320740f07425fb7ed}} 
+\index{convex.h@{convex.h}!convex\_get\_address@{convex\_get\_address}}
+\index{convex\_get\_address@{convex\_get\_address}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_get\_address()}{convex\_get\_address()}}
+{\footnotesize\ttfamily int convex\+\_\+get\+\_\+address (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const char $\ast$}]{name,  }\item[{const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{address,  }\item[{\mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}} $\ast$}]{result\+\_\+address }\end{DoxyParamCaption})}
+
+Get an adress using the provided account address.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em name} & Name of the library/function to get the address of.\\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Address of the caller.\\
+\hline
+\mbox{\texttt{ out}}  & {\em result\+\_\+address} & Pointer to an address variable to write the address to.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the address was found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_aabad216914bc185e812ed7d77dd57102}\label{convex_8h_aabad216914bc185e812ed7d77dd57102}} 
+\index{convex.h@{convex.h}!convex\_get\_url@{convex\_get\_url}}
+\index{convex\_get\_url@{convex\_get\_url}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_get\_url()}{convex\_get\_url()}}
+{\footnotesize\ttfamily const char$\ast$ convex\+\_\+get\+\_\+url (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex }\end{DoxyParamCaption})}
+
+Return the url set when the convex\+\_\+init was first called.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+const char $\ast$ string of the url 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a564bc3ff4f809a4e0f4141b73af1db40}\label{convex_8h_a564bc3ff4f809a4e0f4141b73af1db40}} 
+\index{convex.h@{convex.h}!convex\_init@{convex\_init}}
+\index{convex\_init@{convex\_init}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_init()}{convex\_init()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}} convex\+\_\+init (\begin{DoxyParamCaption}\item[{const char $\ast$}]{url }\end{DoxyParamCaption})}
+
+Init a convex connection to a specified url.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em url} & URL to connect to the convex network. Defaluts\+: https\+:\textbackslash{}convex.\+world\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+convex\+\_\+p Convex handle that has to be passed to other functions. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a14cd0595f5c7835db48823164f05d4db}\label{convex_8h_a14cd0595f5c7835db48823164f05d4db}} 
+\index{convex.h@{convex.h}!convex\_is\_response@{convex\_is\_response}}
+\index{convex\_is\_response@{convex\_is\_response}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_is\_response()}{convex\_is\_response()}}
+{\footnotesize\ttfamily bool convex\+\_\+is\+\_\+response (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex }\end{DoxyParamCaption})}
+
+Tests to see if a response was returned after calling a {\ttfamily convex\+\_\+query} or {\ttfamily convex\+\_\+submit}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a response is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a2c711c4b4349f2fff09ddbfa24e14ce6}\label{convex_8h_a2c711c4b4349f2fff09ddbfa24e14ce6}} 
+\index{convex.h@{convex.h}!convex\_query@{convex\_query}}
+\index{convex\_query@{convex\_query}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_query()}{convex\_query()}}
+{\footnotesize\ttfamily int convex\+\_\+query (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const char $\ast$}]{query,  }\item[{const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{address }\end{DoxyParamCaption})}
+
+Execute a query on the convex network.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em query} & The query string to execute.\\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Optional address of the account to execute the query on. Defaults\+: 9.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK or CONVEX\+\_\+\+ERROR.. if this function was succesfull 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_ad03dc21b6c582b861c68d42c49fe391f}\label{convex_8h_ad03dc21b6c582b861c68d42c49fe391f}} 
+\index{convex.h@{convex.h}!convex\_request\_funds@{convex\_request\_funds}}
+\index{convex\_request\_funds@{convex\_request\_funds}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_request\_funds()}{convex\_request\_funds()}}
+{\footnotesize\ttfamily int convex\+\_\+request\+\_\+funds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const \mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}}}]{amount,  }\item[{const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{address,  }\item[{\mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}} $\ast$}]{result\+\_\+amount }\end{DoxyParamCaption})}
+
+Request funds for an account address from the test convex network.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & The amount to request.\\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & The account address to request for.\\
+\hline
+\mbox{\texttt{ out}}  & {\em result\+\_\+amount} & Pointer to an amount variable, where the amount of funds requested will be writtern. This can be NULL if you do not wish to see the amount requested. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{convex_8h_aab2c86d24b672c68ca4b95b761f98256}\label{convex_8h_aab2c86d24b672c68ca4b95b761f98256}} 
+\index{convex.h@{convex.h}!convex\_response\_get\_code@{convex\_response\_get\_code}}
+\index{convex\_response\_get\_code@{convex\_response\_get\_code}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_response\_get\_code()}{convex\_response\_get\_code()}}
+{\footnotesize\ttfamily long convex\+\_\+response\+\_\+get\+\_\+code (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex }\end{DoxyParamCaption})}
+
+Get the response code after calling a {\ttfamily convex\+\_\+query} or {\ttfamily convex\+\_\+submit}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+long response code. Normally this will be 200 if request was succesfull. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a782e8fd4d5651b4af4ffa3bd8513c55a}\label{convex_8h_a782e8fd4d5651b4af4ffa3bd8513c55a}} 
+\index{convex.h@{convex.h}!convex\_response\_get\_data@{convex\_response\_get\_data}}
+\index{convex\_response\_get\_data@{convex\_response\_get\_data}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_response\_get\_data()}{convex\_response\_get\_data()}}
+{\footnotesize\ttfamily const char$\ast$ convex\+\_\+response\+\_\+get\+\_\+data (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex }\end{DoxyParamCaption})}
+
+Get the response data after calling a {\ttfamily convex\+\_\+query} or {\ttfamily convex\+\_\+submit}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+const char $\ast$ of the response text. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_a668445520ccdc565e1cae1d9592f1997}\label{convex_8h_a668445520ccdc565e1cae1d9592f1997}} 
+\index{convex.h@{convex.h}!convex\_send@{convex\_send}}
+\index{convex\_send@{convex\_send}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_send()}{convex\_send()}}
+{\footnotesize\ttfamily int convex\+\_\+send (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{const char $\ast$}]{transaction,  }\item[{const \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account,  }\item[{const \mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{address }\end{DoxyParamCaption})}
+
+Send a transaction to the convex network. You need to provide a valid account with the private key, since the send function needs to sign the transacation.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em transaction} & Transaction string to send to the convex network.\\
+\hline
+\mbox{\texttt{ in}}  & {\em account} & Convex account to sign the transaction.\\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Address of the account on the convex network.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the transaction was sent successfuly. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex_8h_aea4373f0d36953bd42e596252d5b755b}\label{convex_8h_aea4373f0d36953bd42e596252d5b755b}} 
+\index{convex.h@{convex.h}!convex\_transfer@{convex\_transfer}}
+\index{convex\_transfer@{convex\_transfer}!convex.h@{convex.h}}
+\doxysubsubsection{\texorpdfstring{convex\_transfer()}{convex\_transfer()}}
+{\footnotesize\ttfamily int convex\+\_\+transfer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex_8h_a8290b3691d04122de0e81b06e1a531ef}{convex\+\_\+p}}}]{convex,  }\item[{\mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{to\+\_\+address,  }\item[{\mbox{\hyperlink{convex_8h_a774e2f040f7ee991d3ad81b78a0c4e0b}{amount\+\_\+t}}}]{amount,  }\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account,  }\item[{\mbox{\hyperlink{convex_8h_a9bef0f56c5c02f15f8ef8da4ad89ee71}{address\+\_\+t}}}]{from\+\_\+address }\end{DoxyParamCaption})}
+
+Transfer funds from an account to another account address.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em convex} & Convex data created by the {\ttfamily convex\+\_\+init} function.\\
+\hline
+\mbox{\texttt{ in}}  & {\em to\+\_\+address} & Address of the account you wish to move the coins too.\\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & The amount of funds to transfer.\\
+\hline
+\mbox{\texttt{ in}}  & {\em account} & The account that has the nessary keys to perform the transfer.\\
+\hline
+\mbox{\texttt{ in}}  & {\em from\+\_\+address} & Address of the account that has the funds to transfer from.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the transfer was succesfull. 
+\end{DoxyReturn}

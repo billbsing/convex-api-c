@@ -7,7 +7,6 @@ src/stamp*
 tests/*
 !/tests/*.c
 !/tests/Makefile.am
-/docs
 doxygen.config
 
 
@@ -71,7 +70,7 @@ dkms.conf
 
 #
 # GIT Ignore AutoMake
-# 
+#
 # http://www.gnu.org/software/automake
 /configure~
 /libtool
@@ -121,8 +120,8 @@ m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
 
-# Generated Makefile 
-# (meta build system like autotools, 
+# Generated Makefile
+# (meta build system like autotools,
 # can automatically generate from config.status script
 # (which is called by configure script))
 Makefile

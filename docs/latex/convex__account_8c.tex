@@ -1,0 +1,204 @@
+\hypertarget{convex__account_8c}{}\doxysection{src/convex\+\_\+account.c File Reference}
+\label{convex__account_8c}\index{src/convex\_account.c@{src/convex\_account.c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}convex\+\_\+account.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}convex\+\_\+utils.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} \mbox{\hyperlink{convex__account_8c_aa4f4f7e33f1f5b409c2f5d04afbcf7c8}{convex\+\_\+account\+\_\+init}} ()
+\item 
+\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} \mbox{\hyperlink{convex__account_8c_a6ef1ede80c6cbef6630cba29ecebcc93}{convex\+\_\+account\+\_\+init\+\_\+from\+\_\+text}} (const char $\ast$key\+\_\+text, const char $\ast$password)
+\item 
+\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} \mbox{\hyperlink{convex__account_8c_a846b1b462501b584dc1004656575414e}{convex\+\_\+account\+\_\+init\+\_\+from\+\_\+file}} (FILE $\ast$fp, const char $\ast$password)
+\item 
+int \mbox{\hyperlink{convex__account_8c_a38877eb38d258b514d56459fbc1a38a7}{convex\+\_\+account\+\_\+close}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} account)
+\item 
+int \mbox{\hyperlink{convex__account_8c_af625dd6b491373f17cc62769532f34d3}{convex\+\_\+account\+\_\+export\+\_\+to\+\_\+file}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} account, const char $\ast$password, FILE $\ast$fp)
+\item 
+int \mbox{\hyperlink{convex__account_8c_a4133feb20a33b6bc49b9735156c33939}{convex\+\_\+account\+\_\+export\+\_\+to\+\_\+text}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} account, const char $\ast$password, char $\ast$buffer, long $\ast$buffer\+\_\+size)
+\item 
+const unsigned char $\ast$ \mbox{\hyperlink{convex__account_8c_aab051d0e4efb70c4c8624219c8a348e7}{convex\+\_\+account\+\_\+get\+\_\+public\+\_\+key\+\_\+bytes}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} account)
+\item 
+const char $\ast$ \mbox{\hyperlink{convex__account_8c_aa2e36ebf19f461f79fbc4575129a6dea}{convex\+\_\+account\+\_\+get\+\_\+public\+\_\+key}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} account)
+\item 
+const bool \mbox{\hyperlink{convex__account_8c_add4a1c97b45fdca0b7119b2f91e96f9a}{convex\+\_\+account\+\_\+is\+\_\+equal}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} a, \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} b)
+\item 
+int \mbox{\hyperlink{convex__account_8c_af96a8ce9c0c46779cad0e5c8ccb70f06}{convex\+\_\+account\+\_\+sign\+\_\+data}} (\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} account, const void $\ast$hash\+\_\+data, int hash\+\_\+data\+\_\+length, unsigned char $\ast$signed\+\_\+data, int $\ast$signed\+\_\+data\+\_\+length)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{convex__account_8c_a38877eb38d258b514d56459fbc1a38a7}\label{convex__account_8c_a38877eb38d258b514d56459fbc1a38a7}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_close@{convex\_account\_close}}
+\index{convex\_account\_close@{convex\_account\_close}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_close()}{convex\_account\_close()}}
+{\footnotesize\ttfamily int convex\+\_\+account\+\_\+close (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account }\end{DoxyParamCaption})}
+
+Closes and frees the allocated memory for the convex\+\_\+account data structure.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em account} & Pointer to the convex\+\_\+account data.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if ok. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_af625dd6b491373f17cc62769532f34d3}\label{convex__account_8c_af625dd6b491373f17cc62769532f34d3}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_export\_to\_file@{convex\_account\_export\_to\_file}}
+\index{convex\_account\_export\_to\_file@{convex\_account\_export\_to\_file}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_export\_to\_file()}{convex\_account\_export\_to\_file()}}
+{\footnotesize\ttfamily int convex\+\_\+account\+\_\+export\+\_\+to\+\_\+file (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account,  }\item[{const char $\ast$}]{password,  }\item[{FILE $\ast$}]{fp }\end{DoxyParamCaption})}
+
+Exports the public/private key to an encrypted file.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em account} & The account to export.\\
+\hline
+\mbox{\texttt{ in}}  & {\em password} & The string password to encrypt the PEM file.\\
+\hline
+\mbox{\texttt{ in}}  & {\em fp} & The file handle to write the encrypted data in PEM format.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the file was exported. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_a4133feb20a33b6bc49b9735156c33939}\label{convex__account_8c_a4133feb20a33b6bc49b9735156c33939}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_export\_to\_text@{convex\_account\_export\_to\_text}}
+\index{convex\_account\_export\_to\_text@{convex\_account\_export\_to\_text}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_export\_to\_text()}{convex\_account\_export\_to\_text()}}
+{\footnotesize\ttfamily int convex\+\_\+account\+\_\+export\+\_\+to\+\_\+text (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account,  }\item[{const char $\ast$}]{password,  }\item[{char $\ast$}]{buffer,  }\item[{long $\ast$}]{buffer\+\_\+size }\end{DoxyParamCaption})}
+
+Export the public/private key to a PEM encoded text format.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em account} & Account to export.\\
+\hline
+\mbox{\texttt{ in}}  & {\em password} & Password to encrypt the PEM format.\\
+\hline
+\mbox{\texttt{ out}}  & {\em buffer} & Pointer to a buffer to write too. You must have $>$ 140 bytes created for the PEM to be writtern.\\
+\hline
+\mbox{\texttt{ out}}  & {\em buffer\+\_\+size} & Pointer to a long buffer size. This value must be set to the maximum allowed size the buffer can handle. If less then allowed then this call will return with an error. The function will write the length of data writtern to buffer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{convex__account_8c_aa2e36ebf19f461f79fbc4575129a6dea}\label{convex__account_8c_aa2e36ebf19f461f79fbc4575129a6dea}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_get\_public\_key@{convex\_account\_get\_public\_key}}
+\index{convex\_account\_get\_public\_key@{convex\_account\_get\_public\_key}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_get\_public\_key()}{convex\_account\_get\_public\_key()}}
+{\footnotesize\ttfamily const char$\ast$ convex\+\_\+account\+\_\+get\+\_\+public\+\_\+key (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account }\end{DoxyParamCaption})}
+
+Return a hex string of the public key.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em account} & Account to get the public key.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a hex string of the public key. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_aab051d0e4efb70c4c8624219c8a348e7}\label{convex__account_8c_aab051d0e4efb70c4c8624219c8a348e7}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_get\_public\_key\_bytes@{convex\_account\_get\_public\_key\_bytes}}
+\index{convex\_account\_get\_public\_key\_bytes@{convex\_account\_get\_public\_key\_bytes}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_get\_public\_key\_bytes()}{convex\_account\_get\_public\_key\_bytes()}}
+{\footnotesize\ttfamily const unsigned char$\ast$ convex\+\_\+account\+\_\+get\+\_\+public\+\_\+key\+\_\+bytes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account }\end{DoxyParamCaption})}
+
+Pointer to the public key in bytes.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em account} & Account to get the public key in bytes\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The pointer to the public key. The key length is CONVEX\+\_\+\+ACCOUNT\+\_\+\+PUBLIC\+\_\+\+KEY\+\_\+\+LENGTH 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_aa4f4f7e33f1f5b409c2f5d04afbcf7c8}\label{convex__account_8c_aa4f4f7e33f1f5b409c2f5d04afbcf7c8}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_init@{convex\_account\_init}}
+\index{convex\_account\_init@{convex\_account\_init}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_init()}{convex\_account\_init()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} convex\+\_\+account\+\_\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Init a convex account. This will generate a new random public/private ED25991 keys. \mbox{\Hypertarget{convex__account_8c_a846b1b462501b584dc1004656575414e}\label{convex__account_8c_a846b1b462501b584dc1004656575414e}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_init\_from\_file@{convex\_account\_init\_from\_file}}
+\index{convex\_account\_init\_from\_file@{convex\_account\_init\_from\_file}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_init\_from\_file()}{convex\_account\_init\_from\_file()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} convex\+\_\+account\+\_\+init\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{fp,  }\item[{const char $\ast$}]{password }\end{DoxyParamCaption})}
+
+Init a convex account data struct using a file handle. The file is opened to a PEM file.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fp} & File handle that is open to a PEM file.\\
+\hline
+\mbox{\texttt{ in}}  & {\em password} & Password string that was used to encrypt the PEM file.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The convex\+\_\+account\+\_\+p of the account. Return NUL if the file cannot be opened, memory issues or the password is incorrect. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_a6ef1ede80c6cbef6630cba29ecebcc93}\label{convex__account_8c_a6ef1ede80c6cbef6630cba29ecebcc93}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_init\_from\_text@{convex\_account\_init\_from\_text}}
+\index{convex\_account\_init\_from\_text@{convex\_account\_init\_from\_text}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_init\_from\_text()}{convex\_account\_init\_from\_text()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}} convex\+\_\+account\+\_\+init\+\_\+from\+\_\+text (\begin{DoxyParamCaption}\item[{const char $\ast$}]{key\+\_\+text,  }\item[{const char $\ast$}]{password }\end{DoxyParamCaption})}
+
+Init a convex account from a PEM text string. This string has been created by the {\ttfamily convex\+\_\+account\+\_\+export\+\_\+to\+\_\+file} or by the {\ttfamily convex\+\_\+account\+\_\+export\+\_\+text} function.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em key\+\_\+text} & PEM string to import.\\
+\hline
+\mbox{\texttt{ in}}  & {\em password} & Password string that was used to encrypt the key in PEM format.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new convex\+\_\+account\+\_\+p value. If the password is incorrect or their is not enought memory, this function will return a NULL. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_add4a1c97b45fdca0b7119b2f91e96f9a}\label{convex__account_8c_add4a1c97b45fdca0b7119b2f91e96f9a}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_is\_equal@{convex\_account\_is\_equal}}
+\index{convex\_account\_is\_equal@{convex\_account\_is\_equal}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_is\_equal()}{convex\_account\_is\_equal()}}
+{\footnotesize\ttfamily const bool convex\+\_\+account\+\_\+is\+\_\+equal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{a,  }\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{b }\end{DoxyParamCaption})}
+
+Return true if both accounts are equal.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em a} & Account a to compare.\\
+\hline
+\mbox{\texttt{ in}}  & {\em b} & Account b to compare with account a.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if both public keys are equal. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{convex__account_8c_af96a8ce9c0c46779cad0e5c8ccb70f06}\label{convex__account_8c_af96a8ce9c0c46779cad0e5c8ccb70f06}} 
+\index{convex\_account.c@{convex\_account.c}!convex\_account\_sign\_data@{convex\_account\_sign\_data}}
+\index{convex\_account\_sign\_data@{convex\_account\_sign\_data}!convex\_account.c@{convex\_account.c}}
+\doxysubsubsection{\texorpdfstring{convex\_account\_sign\_data()}{convex\_account\_sign\_data()}}
+{\footnotesize\ttfamily int convex\+\_\+account\+\_\+sign\+\_\+data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{convex__account_8h_a34d6ce239f1a04a734d2ce6ecfba932a}{convex\+\_\+account\+\_\+p}}}]{account,  }\item[{const void $\ast$}]{hash\+\_\+data,  }\item[{int}]{hash\+\_\+data\+\_\+length,  }\item[{unsigned char $\ast$}]{signed\+\_\+data,  }\item[{int $\ast$}]{signed\+\_\+data\+\_\+length }\end{DoxyParamCaption})}
+
+Sign hash and return the signature.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em account} & Account that can do the signing.\\
+\hline
+\mbox{\texttt{ in}}  & {\em hash\+\_\+data} & Hash data as bytes.\\
+\hline
+\mbox{\texttt{ in}}  & {\em hash\+\_\+data\+\_\+length} & Length of the hash data to sign.\\
+\hline
+\mbox{\texttt{ out}}  & {\em signed\+\_\+data} & Signed data to write in bytes.\\
+\hline
+\mbox{\texttt{ out}}  & {\em signed\+\_\+data\+\_\+length} & Length of the sigend data buffer, after this call, the number of bytes writtern by the signing process.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CONVEX\+\_\+\+OK if the signing was successfull. 
+\end{DoxyReturn}
