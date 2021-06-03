@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: autotools
-      run: autotools --install
+      run: autoreconf --install
     - name: configure
       run: ./configure
     - name: make
