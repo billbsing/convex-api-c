@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
-      run: sudo apt-get install libcurl
+      run: sudo apt-get install curl
     - name: autotools
       run: autoreconf --install
     - name: configure
