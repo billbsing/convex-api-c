@@ -19,10 +19,10 @@ int main() {
     convex_p convex = convex_init("https://convex.world");
     assert(convex);
 
-    convex_account_p account = convex_account_init();
+    convex_key_pair_p key_pair = convex_key_pair_init();
     assert(result == CONVEX_OK);
 
-    result = convex_create_account(convex, account, &address);
+    result = convex_create_account(convex, key_pair, &address);
     assert(result == CONVEX_OK);
     assert(address > 20);
 
@@ -30,7 +30,7 @@ int main() {
     assert(result == CONVEX_OK);
     assert(result_amount == amount);
 
-    result = convex_account_close(account);
+    result = convex_key_pair_close(key_pair);
     assert(result == CONVEX_OK);
     result = convex_close(convex);
     assert(result == CONVEX_OK);

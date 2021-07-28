@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <convex_account.h>
+#include <convex_key_pair.h>
 
 const char *PRIVATE_TEST_KEY_TEXT = "-----BEGIN ENCRYPTED PRIVATE KEY-----\n\
 MIGbMFcGCSqGSIb3DQEFDTBKMCkGCSqGSIb3DQEFDDAcBAi3qm1zgjCO5gICCAAw\n\
@@ -16,15 +16,15 @@ const char *PUBLIC_KEY_HEX = "5288Fec4153b702430771DFAC8AeD0B21CAFca4344daE0d47B
 
 const char *TEST_PASSWORD = "secret";
 int main() {
-    convex_account_p account;
+    convex_key_pair_p key_pair;
     int result;
 
-    account = convex_account_init_from_text(PRIVATE_TEST_KEY_TEXT, TEST_PASSWORD);
-    assert(account);
+    key_pair = convex_key_pair_init_from_text(PRIVATE_TEST_KEY_TEXT, TEST_PASSWORD);
+    assert(key_pair);
 
-    assert(strcmp(convex_account_get_public_key(account), PUBLIC_KEY_HEX) == 0);
+    assert(strcmp(convex_key_pair_get_public_key(key_pair), PUBLIC_KEY_HEX) == 0);
 
-    result = convex_account_close(account);
+    result = convex_key_pair_close(key_pair);
     assert(result == CONVEX_OK);
 
     return 0;

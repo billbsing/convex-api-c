@@ -10,11 +10,11 @@ test_convex_send \
 test_convex_transfer \
 test_convex_get_account_information \
 test_convex_get_account_balance \
-test_convex_account_init \
-test_convex_account_export_text \
-test_convex_account_export_file \
-test_convex_account_public_key \
-test_convex_account_sign_data \
+test_convex_key_pair_init \
+test_convex_key_pair_export_text \
+test_convex_key_pair_export_file \
+test_convex_key_pair_public_key \
+test_convex_key_pair_sign_data \
 test_convex_utils_public_key_to_hex \
 test_convex_utils_bytes_to_hex \
 test_convex_utils_hex_to_bytes
@@ -28,11 +28,11 @@ test_convex_send \
 test_convex_transfer \
 test_convex_get_account_information \
 test_convex_get_account_balance \
-test_convex_account_init \
-test_convex_account_export_text \
-test_convex_account_export_file \
-test_convex_account_public_key \
-test_convex_account_sign_data \
+test_convex_key_pair_init \
+test_convex_key_pair_export_text \
+test_convex_key_pair_export_file \
+test_convex_key_pair_public_key \
+test_convex_key_pair_sign_data \
 test_convex_utils_public_key_to_hex \
 test_convex_utils_bytes_to_hex \
 test_convex_utils_hex_to_bytes

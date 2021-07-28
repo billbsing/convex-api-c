@@ -21,7 +21,7 @@
  * + openssl
  * + libcurl
  *
- * See `convex.c` and  `convex_account.c` for the API documentation.
+ * See `convex.c` and  `convex_key_pair.c` for the API documentation.
  *
  * See an example of using the convex-api-c library:
  *
@@ -418,21 +418,21 @@ const char * convex_get_url(convex_p convex) {
  *
  * @param[in] convex Convex handle with the convex netwok data.
  *
- * @param[in] account Convex account with a valid public/private key.
+ * @param[in] key_pair Convex key_pair with a valid public/private key.
  *
  * @param[out] address Pointer to an address var that will contain the new address.
  *
  * @return CONVEX_OK if the create account was valid and the new address will be set.
  *
  */
-int convex_create_account(const convex_p convex, const convex_account_p account, unsigned long *address) {
+int convex_create_account(const convex_p convex, const convex_key_pair_p key_pair, unsigned long *address) {
     response_t response;
     memset(&response, 0, sizeof(response_t));
 
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
-    if (!account) {
+    if (!key_pair) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
     if (!address) {
@@ -446,7 +446,7 @@ int convex_create_account(const convex_p convex, const convex_account_p account,
     }
 
     char data[120];
-    sprintf(data, "{\"accountKey\": \"%s\"}", convex_account_get_public_key(account));
+    sprintf(data, "{\"accountKey\": \"%s\"}", convex_key_pair_get_public_key(key_pair));
 
     int result = curl_request_post(url, data, &response);
     curl_url_cleanup(url);
@@ -604,28 +604,28 @@ int convex_query(convex_p convex, const char *query, const address_t address) {
 }
 
 /**
- * Send a transaction to the convex network. You need to provide a valid account with the private key, since
+ * Send a transaction to the convex network. You need to provide a valid key pair with a private key, since
  * the send function needs to sign the transacation.
  *
  * @param[in] convex Convex data created by the `convex_init` function.
  *
  * @param[in] transaction Transaction string to send to the convex network.
  *
- * @param[in] account Convex account to sign the transaction.
+ * @param[in] key_pair Convex key_pair to sign the transaction.
  *
  * @param[in] address Address of the account on the convex network.
  *
  * @returns CONVEX_OK if the transaction was sent successfuly.
  *
  */
-int convex_send(convex_p convex, const char *transaction, const convex_account_p account, const address_t address) {
+int convex_send(convex_p convex, const char *transaction, const convex_key_pair_p key_pair, const address_t address) {
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
     if (!transaction) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
-    if (!account) {
+    if (!key_pair) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
 
@@ -646,10 +646,10 @@ int convex_send(convex_p convex, const char *transaction, const convex_account_p
         return result;
     }
 
-    // sign hash bytes with account key
+    // sign hash bytes with key_pair
     unsigned char signed_data[64];
     int signed_data_length = 64;
-    result = convex_account_sign_data(account, hash_data, hash_data_length, signed_data, &signed_data_length);
+    result = convex_key_pair_sign_data(key_pair, hash_data, hash_data_length, signed_data, &signed_data_length);
     if (result != CONVEX_OK) {
         return result;
     }
@@ -663,7 +663,7 @@ int convex_send(convex_p convex, const char *transaction, const convex_account_p
     }
 
     // call submit with address, public_key(hex), hash (hex), signed data(hex)
-    const char *public_key = convex_account_get_public_key(account);
+    const char *public_key = convex_key_pair_get_public_key(key_pair);
     result = convex_transaction_submit(convex, address, public_key, hash_str, signed_hex);
 
     return result;
@@ -678,14 +678,14 @@ int convex_send(convex_p convex, const char *transaction, const convex_account_p
  *
  * @param[in] amount The amount of funds to transfer.
  *
- * @param[in] account The account that has the nessary keys to perform the transfer.
+ * @param[in] key_pair The key pair that has the nessary keys to perform the transfer.
  *
  * @param[in] from_address Address of the account that has the funds to transfer from.
  *
  * @return CONVEX_OK if the transfer was succesfull.
  *
  */
-int convex_transfer(convex_p convex, address_t to_address, amount_t amount, convex_account_p account, address_t from_address) {
+int convex_transfer(convex_p convex, address_t to_address, amount_t amount, convex_key_pair_p key_pair, address_t from_address) {
     if (!convex) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
@@ -695,7 +695,7 @@ int convex_transfer(convex_p convex, address_t to_address, amount_t amount, conv
     if (amount == 0) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
-    if (!account) {
+    if (!key_pair) {
         return CONVEX_ERROR_INVALID_PARAMETER;
     }
     if (from_address == 0) {
@@ -704,7 +704,7 @@ int convex_transfer(convex_p convex, address_t to_address, amount_t amount, conv
     char transaction[120];
     int result;
     sprintf(transaction, "(transfer #%ld %ld)", to_address, amount);
-    result = convex_send(convex, transaction, account, from_address);
+    result = convex_send(convex, transaction, key_pair, from_address);
     return result;
 }
 

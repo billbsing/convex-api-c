@@ -22,10 +22,10 @@ int main() {
     convex = convex_init(url);
     assert(convex);
 
-    convex_account_p account = convex_account_init();
-    assert(account);
+    convex_key_pair_p key_pair = convex_key_pair_init();
+    assert(key_pair);
 
-    result = convex_create_account(convex, account, &address);
+    result = convex_create_account(convex, key_pair, &address);
     assert(result == CONVEX_OK);
     assert(address > 20);
 
@@ -33,7 +33,7 @@ int main() {
     assert(result == CONVEX_OK);
     assert(result_amount == amount);
 
-    result = convex_send(convex, transaction, account, address);
+    result = convex_send(convex, transaction, key_pair, address);
     assert(result == CONVEX_OK);
 
     //printf("send result: %s\n", convex->response.data);

@@ -1,7 +1,7 @@
 /*
  *
  *
- *  test_convex_account_sign_data
+ *  test_convex_key_pair_sign_data
  *
  *
  */
@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "convex_account.h"
+#include "convex_key_pair.h"
 
 int main() {
 
@@ -19,9 +19,9 @@ int main() {
     };
 
     const unsigned char SIGN_DATA[] = {
-        0x7e, 0xce, 0xff, 0xab, 0x47, 0x29, 0x5b, 0xe3, 0x89, 0x1e, 0xa7, 0x45, 0x83, 0x8a, 0x99, 0x10, 
-        0x2b, 0xfa, 0xf5, 0x25, 0xec, 0x43, 0x63, 0x23, 0x66, 0xc7, 0xec, 0x3f, 0x54, 0xdb, 0x48, 0x22, 
-        0xb5, 0xd5, 0x81, 0x57, 0x3a, 0xec, 0xde, 0x94, 0xc4, 0x20, 0x55, 0x4f, 0x96, 0x3b, 0xae, 0xbb, 
+        0x7e, 0xce, 0xff, 0xab, 0x47, 0x29, 0x5b, 0xe3, 0x89, 0x1e, 0xa7, 0x45, 0x83, 0x8a, 0x99, 0x10,
+        0x2b, 0xfa, 0xf5, 0x25, 0xec, 0x43, 0x63, 0x23, 0x66, 0xc7, 0xec, 0x3f, 0x54, 0xdb, 0x48, 0x22,
+        0xb5, 0xd5, 0x81, 0x57, 0x3a, 0xec, 0xde, 0x94, 0xc4, 0x20, 0x55, 0x4f, 0x96, 0x3b, 0xae, 0xbb,
         0xf4, 0x12, 0xe4, 0x30, 0x4a, 0xd8, 0x63, 0x68, 0x86, 0xdd, 0xfa, 0x7b, 0x10, 0x49, 0xf7, 0x0e,
 	};
 
@@ -34,18 +34,18 @@ JAr4iFzPLkM18YEP2ZE=\n\
 
 const char *TEST_PASSWORD = "secret";
 
-    convex_account_p account;
+    convex_key_pair_p key_pair;
     int result;
 
-    // load in stardard test account
-    account = convex_account_init_from_text(PRIVATE_TEST_KEY_TEXT, TEST_PASSWORD);
-    assert(account);
+    // load in stardard test key_pair
+    key_pair = convex_key_pair_init_from_text(PRIVATE_TEST_KEY_TEXT, TEST_PASSWORD);
+    assert(key_pair);
 
     int signed_data_length = 64;
     unsigned char signed_data[signed_data_length];
     memset(signed_data, 0, signed_data_length);
 
-    result = convex_account_sign_data(account, HASH_DATA, sizeof(HASH_DATA), signed_data, &signed_data_length);
+    result = convex_key_pair_sign_data(key_pair, HASH_DATA, sizeof(HASH_DATA), signed_data, &signed_data_length);
     assert(result == CONVEX_OK);
 
     /*
@@ -69,7 +69,7 @@ const char *TEST_PASSWORD = "secret";
     // printf("signed data: %s\n", sign_text);
     assert(strcmp(sign_text, SIGN_TEXT) == 0);
     */
-    result = convex_account_close(account);
+    result = convex_key_pair_close(key_pair);
     assert(result == CONVEX_OK);
 
     return 0;
