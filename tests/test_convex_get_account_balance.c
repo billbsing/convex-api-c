@@ -18,7 +18,7 @@ int main() {
     assert(convex);
 
     amount_t balance;
-    result = convex_get_account_balance(convex, 9, &balance);
+    result = convex_get_account_balance(convex, 11, &balance);
     assert(result == CONVEX_OK);
 
     printf("balance: %ld\n", balance);
